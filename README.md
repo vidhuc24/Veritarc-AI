@@ -1,5 +1,5 @@
-# 🔍 AuditFlow AI - Evidence Validator
-## AI-Powered Control Evidence Validation System
+# 🔍 Veritarc AI - Evidence Validator
+## AI-Powered Verification for Audit, Risk & Compliance
 
 ### 🎯 Bootcamp Final Challenge Submission
 
@@ -9,7 +9,7 @@ This project addresses the bootcamp challenge requirements through 7 comprehensi
 
 ## 🎬 Demo Video
 📹 **[5-Minute Live Demo](https://www.loom.com/share/YOUR_LOOM_LINK_HERE)**
-> *Live demonstration of the AuditFlow AI application showing evidence upload, validation, and results*
+> *Live demonstration of the Veritarc AI application showing evidence upload, validation, and results*
 
 ---
 
@@ -27,7 +27,7 @@ This creates a cascade of problems: audit cycles extend beyond deadlines, junior
 
 ### Task 2: Proposed Solution ✅
 **Solution Vision:**
-AuditFlow AI transforms evidence review from a manual bottleneck into an intelligent, consistent process. Auditors upload evidence documents (PDFs, screenshots, logs) and specify the control framework and requirement. The system instantly analyzes the document against comprehensive control criteria, providing a confidence-scored assessment with specific recommendations.
+Veritarc AI transforms evidence review from a manual bottleneck into an intelligent, consistent process. Auditors upload evidence documents (PDFs, screenshots, logs) and specify the control framework and requirement. The system instantly analyzes the document against comprehensive control criteria, providing a confidence-scored assessment with specific recommendations.
 
 **Technology Stack:**
 - **LLM**: OpenAI GPT-4 - Superior reasoning for complex control requirement interpretation
@@ -78,83 +78,6 @@ Implemented and tested multiple advanced retrieval techniques:
 ### Task 7: Performance Assessment ✅
 Comprehensive performance comparison across all retrieval methods with quantified improvements using RAGAS metrics.
 
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-```bash
-# Ensure you're in the bootcamp environment
-source activate/bin/activate
-cd auditflow-ai
-```
-
-### Installation
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Set up environment variables
-cp .env.example .env
-# Add your OpenAI API key to .env
-```
-
-### Run the Application
-```bash
-# Start the backend
-cd backend && python main.py
-
-# In another terminal, start the frontend
-cd frontend && streamlit run streamlit_app.py
-```
-
-### Access the Application
-- **Frontend**: http://localhost:8501
-- **API Documentation**: http://localhost:8000/docs
-
----
-
-## 📁 Project Structure
-
-```
-auditflow-ai/
-├── README.md                          # This file
-├── requirements.txt                   # Python dependencies
-├── .env.example                      # Environment variables template
-├── backend/
-│   ├── main.py                       # FastAPI application
-│   ├── app/
-│   │   ├── evidence_processor.py     # Document processing
-│   │   ├── validation_engine.py      # RAG + LLM validation
-│   │   └── retrieval_engine.py       # Advanced retrieval methods
-│   ├── agents/
-│   │   ├── evidence_agent.py         # Evidence analysis agent
-│   │   ├── compliance_agent.py       # Compliance validation agent
-│   │   └── recommendation_agent.py   # Recommendation agent
-│   └── models/
-│       └── schemas.py                # Pydantic models
-├── frontend/
-│   ├── streamlit_app.py              # Main Streamlit interface
-│   └── src/                          # React components (future)
-├── data/
-│   ├── control_requirements/         # SOX, SOC2, ISO27001 frameworks
-│   ├── synthetic_evidence/           # Generated test evidence
-│   └── processed/                    # Processed datasets
-├── notebooks/
-│   ├── 01_data_generation.ipynb      # Synthetic data creation
-│   ├── 02_rag_pipeline.ipynb         # RAG development
-│   ├── 03_evaluation.ipynb           # RAGAS evaluation
-│   └── 04_advanced_retrieval.ipynb   # Advanced techniques testing
-├── tests/
-│   ├── test_validation_engine.py     # Unit tests
-│   └── test_agents.py                # Agent tests
-└── docs/
-    ├── CHALLENGE_RESPONSES.md         # Detailed task responses
-    ├── TECHNICAL_ARCHITECTURE.md     # System design
-    └── EVALUATION_RESULTS.md         # Performance analysis
-```
-
----
 
 ## 🎯 Key Features
 
@@ -235,8 +158,151 @@ This project demonstrates mastery of key bootcamp concepts:
 
 ## 📄 License
 
-This project is part of the AI Makerspace Engineering Bootcamp final challenge.
+This project is part of the AI Makerspace Engineering Bootcamp certification challenge.
 
 ---
 
-*Built with ❤️ using the AI Engineering Bootcamp curriculum and best practices* 
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+```bash
+# Ensure you have UV installed (recommended) or Python 3.12+
+uv --version  # Should show UV version
+# OR
+python3 --version  # Should show Python 3.12+
+```
+
+### Installation
+
+#### Option 1: Using UV (Recommended)
+```bash
+# Initialize UV project and install dependencies
+uv init --no-readme
+uv add --requirement requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Add your OpenAI API key to .env
+```
+
+#### Option 2: Using Traditional Virtual Environment
+```bash
+# Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Add your OpenAI API key to .env
+```
+
+### 🔍 How to Verify Your Environment is Active
+
+After installation, verify your setup is working correctly:
+
+#### Quick Verification Commands
+```bash
+# Check Python location (should show your project's .venv path)
+which python
+
+# Check virtual environment variable
+echo $VIRTUAL_ENV
+
+# Test key package imports
+python -c "import openai, langchain, streamlit, fastapi; print('✅ All packages working!')"
+```
+
+#### Expected Outputs
+```bash
+# Virtual environment should be active:
+which python
+# Expected: /path/to/your/project/.venv/bin/python
+
+echo $VIRTUAL_ENV  
+# Expected: /path/to/your/project/.venv
+
+# Packages should import successfully:
+python -c "import openai, streamlit; print('✅ Working!')"
+# Expected: ✅ Working!
+```
+
+#### Troubleshooting
+- **Empty parentheses `()` in prompt**: Normal with UV environments - your environment is still active
+- **`pip` not found**: With UV, use `uv add package-name` instead of `pip install`
+- **Package import errors**: Ensure you're in the activated environment
+
+### Run the Application
+
+#### Using UV (Recommended)
+```bash
+# Start the backend
+uv run python backend/main.py
+
+# In another terminal, start the frontend
+uv run streamlit run frontend/streamlit_app.py
+```
+
+#### Using Traditional Virtual Environment
+```bash
+# Ensure environment is activated first
+source .venv/bin/activate
+
+# Start the backend
+cd backend && python main.py
+
+# In another terminal, start the frontend
+cd frontend && streamlit run streamlit_app.py
+```
+
+### Access the Application
+- **Frontend**: http://localhost:8501
+- **API Documentation**: http://localhost:8000/docs
+
+---
+
+## 📁 Project Structure
+
+```
+auditflow-ai/
+├── README.md                          # This file
+├── requirements.txt                   # Python dependencies
+├── .env.example                      # Environment variables template
+├── backend/
+│   ├── main.py                       # FastAPI application
+│   ├── app/
+│   │   ├── evidence_processor.py     # Document processing
+│   │   ├── validation_engine.py      # RAG + LLM validation
+│   │   └── retrieval_engine.py       # Advanced retrieval methods
+│   ├── agents/
+│   │   ├── evidence_agent.py         # Evidence analysis agent
+│   │   ├── compliance_agent.py       # Compliance validation agent
+│   │   └── recommendation_agent.py   # Recommendation agent
+│   └── models/
+│       └── schemas.py                # Pydantic models
+├── frontend/
+│   ├── streamlit_app.py              # Main Streamlit interface
+│   └── src/                          # React components (future)
+├── data/
+│   ├── control_requirements/         # SOX, SOC2, ISO27001 frameworks
+│   ├── synthetic_evidence/           # Generated test evidence
+│   └── processed/                    # Processed datasets
+├── notebooks/
+│   ├── 01_data_generation.ipynb      # Synthetic data creation
+│   ├── 02_rag_pipeline.ipynb         # RAG development
+│   ├── 03_evaluation.ipynb           # RAGAS evaluation
+│   └── 04_advanced_retrieval.ipynb   # Advanced techniques testing
+├── tests/
+│   ├── test_validation_engine.py     # Unit tests
+│   └── test_agents.py                # Agent tests
+└── docs/
+    ├── CHALLENGE_RESPONSES.md         # Detailed task responses
+    ├── TECHNICAL_ARCHITECTURE.md     # System design
+    └── EVALUATION_RESULTS.md         # Performance analysis
+```
+
+---

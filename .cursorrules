@@ -1,0 +1,120 @@
+# Veritarc AI - Cursor Rules
+
+## Project Overview
+Veritarc AI is an AI-powered evidence validation system for audit, risk, and compliance. It uses advanced RAG (Retrieval-Augmented Generation) techniques and multi-agent systems to analyze control evidence documents and provide confidence-scored assessments.
+
+## Tech Stack & Dependencies
+- **Python**: 3.12+ (managed with UV)
+- **LLM**: OpenAI GPT-4 with OpenAI embeddings (text-embedding-3-small)
+- **AI Framework**: LangChain + LangGraph for orchestration and multi-agent workflows
+- **Vector Database**: ChromaDB for similarity search and document storage
+- **Backend**: FastAPI with Pydantic models
+- **Frontend**: Streamlit (primary) with future React components
+- **Evaluation**: RAGAS for performance assessment
+- **Monitoring**: LangSmith for tracing and debugging
+- **External APIs**: Tavily for real-time regulatory guidance
+- **Document Processing**: PyPDF2, python-docx, Pillow, pytesseract for OCR
+
+## Project Structure
+```
+├── backend/                    # FastAPI application
+│   ├── main.py                # FastAPI entry point
+│   ├── app/                   # Core business logic
+│   ├── agents/                # LangGraph agents
+│   ├── models/                # Pydantic schemas
+│   └── services/              # External service integrations
+├── frontend/                  # Streamlit interface
+├── data/                      # Data storage and processing
+│   ├── control_requirements/  # SOX, SOC2, ISO27001 frameworks
+│   ├── synthetic_evidence/    # Generated test data
+│   └── processed/             # Processed datasets
+├── notebooks/                 # Jupyter notebooks for development
+├── docs/                      # Project documentation
+└── tests/                     # Test files
+```
+
+## Coding Conventions
+
+### Python Style
+- Follow PEP 8 with Black formatting
+- Use type hints consistently
+- Prefer async/await for I/O operations
+- Use Pydantic models for data validation
+- Follow dependency injection patterns
+
+### LangChain/LangGraph Patterns
+- Use LCEL (LangChain Expression Language) for chain composition
+- Implement proper error handling and retries
+- Use structured outputs with Pydantic models
+- Implement proper state management in LangGraph agents
+- Use LangSmith tracing for debugging
+
+### API Design
+- Use FastAPI dependency injection
+- Implement proper error responses with HTTP status codes
+- Use Pydantic models for request/response validation
+- Include comprehensive OpenAPI documentation
+- Follow RESTful conventions
+
+### File Processing
+- Support multiple formats: PDF, DOCX, images (PNG, JPG)
+- Implement proper error handling for corrupted files
+- Use streaming for large file uploads
+- Include file size and type validation
+
+## Environment & Dependencies
+- Use UV for dependency management: `uv add package-name`
+- Environment variables in `.env` file (never commit)
+- Python virtual environment at `.venv/`
+- All secrets should use environment variables
+
+## AI Assistant Guidelines
+
+### When Working on This Project:
+1. **Context Awareness**: Remember this is an audit evidence validation system
+2. **Compliance Focus**: Consider regulatory requirements (SOX, SOC2, ISO27001)
+3. **Multi-Agent Architecture**: Use LangGraph for complex workflows
+4. **RAG Implementation**: Focus on semantic search and retrieval accuracy
+5. **Evaluation-Driven**: Always consider RAGAS metrics for improvements
+6. **Security**: Handle sensitive audit data with proper security measures
+
+### Code Generation Preferences:
+- Always include proper error handling and logging
+- Use async/await for external API calls
+- Include type hints and docstrings
+- Follow the existing project structure
+- Consider performance and scalability
+- Include relevant unit tests
+
+### LangChain/AI Specific:
+- Use structured outputs with Pydantic models
+- Implement proper prompt engineering techniques
+- Consider token limits and costs
+- Use appropriate chunking strategies for documents
+- Implement proper memory management for agents
+
+### Testing & Evaluation:
+- Include unit tests for new functionality
+- Use RAGAS for RAG evaluation
+- Include integration tests for API endpoints
+- Consider edge cases in document processing
+
+## Domain-Specific Context
+- **Audit Evidence**: Documents proving control effectiveness
+- **Control Frameworks**: SOX (Sarbanes-Oxley), SOC2, ISO27001
+- **Compliance Requirements**: Regulatory standards and best practices
+- **Risk Assessment**: Evaluating control gaps and weaknesses
+- **Evidence Types**: Financial reconciliations, access reviews, change logs, system configurations
+
+## Performance Targets
+- Sub-30-second response times for evidence validation
+- 90%+ accuracy on control assessments
+- Support for files up to 50MB
+- Scalable to 1000+ concurrent users
+
+## Security Considerations
+- Never log sensitive audit data
+- Implement proper access controls
+- Use secure file handling practices
+- Encrypt sensitive data at rest and in transit
+- Follow audit trail requirements 
