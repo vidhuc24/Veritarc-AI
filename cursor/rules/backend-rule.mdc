@@ -1,0 +1,54 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Veritarc AI - Backend Rules
+
+## Deployment & Environment
+- Backend should be deployable to cloud platforms (AWS, GCP, Azure)
+- Must be testable locally with clear setup instructions
+- Use environment variables for all configuration
+- Include health check endpoints for monitoring
+
+## FastAPI & API Design
+- Use FastAPI dependency injection
+- Implement proper error responses with HTTP status codes
+- Use Pydantic models for request/response validation
+- Include comprehensive OpenAPI documentation
+- Follow RESTful conventions
+- Use async/await for external API calls
+
+## LangChain/LangGraph Patterns
+- Use LCEL (LangChain Expression Language) for chain composition
+- Implement proper error handling and retries
+- Use structured outputs with Pydantic models
+- Implement proper state management in LangGraph agents
+- Use LangSmith tracing for debugging
+
+## AI & LLM Specific Guidelines
+- Use structured outputs with Pydantic models
+- Implement proper prompt engineering techniques
+- Consider token limits and costs
+- Use appropriate chunking strategies for documents
+- Implement proper memory management for agents
+
+## File Processing
+- Support multiple formats: PDF, DOCX, images (PNG, JPG)
+- Implement proper error handling for corrupted files
+- Use streaming for large file uploads
+- Include file size and type validation
+
+## Multi-Agent Architecture
+- Use LangGraph for complex workflows
+- Focus on semantic search and retrieval accuracy
+- Implement proper state management in LangGraph agents
+- Consider evaluation-driven improvements with RAGAS metrics
+
+## Backend Development Guidelines
+When working on backend components:
+1. **RAG Implementation**: Focus on semantic search and retrieval accuracy
+2. **Multi-Agent Architecture**: Use LangGraph for complex workflows
+3. **Evaluation-Driven**: Always consider RAGAS metrics for improvements
+4. **Performance**: Consider scalability and response time requirements
+5. **Security**: Handle sensitive audit data with proper security measures

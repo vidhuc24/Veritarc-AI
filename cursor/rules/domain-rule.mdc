@@ -1,0 +1,56 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Veritarc AI - Domain-Specific Rules
+
+## Audit & Compliance Context
+This is an AI-powered evidence validation system for audit, risk, and compliance professionals. Always consider the regulatory and business context when developing features.
+
+## Domain-Specific Terminology
+- **Audit Evidence**: Documents proving control effectiveness
+- **Control Frameworks**: SOX (Sarbanes-Oxley), SOC2, ISO27001
+- **Compliance Requirements**: Regulatory standards and best practices
+- **Risk Assessment**: Evaluating control gaps and weaknesses
+- **Evidence Types**: Financial reconciliations, access reviews, change logs, system configurations
+
+## Regulatory Frameworks
+### SOX (Sarbanes-Oxley)
+- Focus on financial reporting controls
+- Emphasis on management assertions and testing
+- Required documentation and evidence standards
+
+### SOC2 (Service Organization Control 2)
+- Trust services criteria: Security, Availability, Processing Integrity, Confidentiality, Privacy
+- Evidence of control operation over time
+- Third-party service provider assessments
+
+### ISO27001 (Information Security Management)
+- Information security management system requirements
+- Risk-based approach to security controls
+- Continuous improvement and monitoring
+
+## AI Assistant Domain Guidelines
+When developing features, always consider:
+
+1. **Context Awareness**: Remember this is an audit evidence validation system
+2. **Compliance Focus**: Consider regulatory requirements (SOX, SOC2, ISO27001)
+3. **Evidence Types**: Support various audit evidence formats and sources
+4. **Confidence Scoring**: Provide quantifiable assessments of evidence quality
+5. **Audit Trail**: Maintain detailed logs of all validation processes
+6. **Professional Standards**: Align with audit profession best practices
+
+## Business Requirements
+- **Accuracy**: 90%+ accuracy on control assessments
+- **Regulatory Compliance**: Meet audit profession standards
+- **Evidence Handling**: Secure processing of sensitive audit documents
+- **Reporting**: Generate compliance-ready validation reports
+- **Traceability**: Full audit trail of validation decisions
+
+## Security & Privacy Considerations
+- Handle sensitive financial and operational data
+- Maintain confidentiality of client audit information
+- Implement proper data retention and disposal policies
+- Ensure compliance with data protection regulations
+- Support segregation of duties in audit processes
