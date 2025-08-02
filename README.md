@@ -3,7 +3,7 @@
 
 ### 🎯 Bootcamp Final Challenge Submission
 
-This project addresses the bootcamp challenge requirements through 7 comprehensive tasks, building an end-to-end AI application for audit evidence validation.
+This project will address the bootcamp challenge requirements through 7 comprehensive tasks, building an end-to-end AI application for audit evidence validation.
 
 ---
 
@@ -13,7 +13,7 @@ This project addresses the bootcamp challenge requirements through 7 comprehensi
 
 ---
 
-## 📋 Challenge Tasks Completed
+## 📋 Challenge Tasks Plan
 
 ### Task 1: Problem & Audience Definition ✅
 **Problem Statement:** *Audit teams spend 60-70% of their time manually reviewing control evidence documents, leading to inconsistent evaluations, delayed audit cycles, and increased compliance costs.*
@@ -27,7 +27,7 @@ This creates a cascade of problems: audit cycles extend beyond deadlines, junior
 
 ### Task 2: Proposed Solution ✅
 **Solution Vision:**
-Veritarc AI transforms evidence review from a manual bottleneck into an intelligent, consistent process. Auditors upload evidence documents (PDFs, screenshots, logs) and specify the control framework and requirement. The system instantly analyzes the document against comprehensive control criteria, providing a confidence-scored assessment with specific recommendations.
+Veritarc AI will transform evidence review from a manual bottleneck into an intelligent, consistent process. Auditors will upload evidence documents (PDFs, screenshots, logs) and specify the control framework and requirement. The system will instantly analyze the document against comprehensive control criteria, providing a confidence-scored assessment with specific recommendations.
 
 **Technology Stack:**
 - **LLM**: OpenAI GPT-4 - Superior reasoning for complex control requirement interpretation
@@ -40,46 +40,47 @@ Veritarc AI transforms evidence review from a manual bottleneck into an intellig
 - **Serving**: FastAPI + Docker - Production-ready API with containerized deployment
 
 **Agentic Reasoning:**
-- Evidence Analysis Agent: Extracts key information from uploaded documents
-- Compliance Validation Agent: Matches evidence against specific control requirements
-- Risk Assessment Agent: Evaluates completeness and identifies potential gaps
-- Recommendation Agent: Suggests specific improvements or next steps
+- Evidence Analysis Agent: Will extract key information from uploaded documents
+- Compliance Validation Agent: Will match evidence against specific control requirements
+- Risk Assessment Agent: Will evaluate completeness and identify potential gaps
+- Recommendation Agent: Will suggest specific improvements or next steps
 
 ### Task 3: Data Strategy ✅
 **Data Sources:**
 1. **Control Requirements Database**: Public SOX, SOC2, ISO27001 frameworks
-2. **Synthetic Evidence Documents**: Generated using GPT-4 with known pass/fail labels
+2. **Synthetic Evidence Documents**: Will be generated using GPT-4 with known pass/fail labels
 3. **Tavily Search API**: Real-time regulatory guidance and best practices
 4. **Public SEC Filings**: Real-world compliance documentation examples
 
 **Chunking Strategy:** Semantic chunking with 500-token overlaps to preserve logical relationships in control requirements while ensuring no critical connections are lost during retrieval.
 
-### Task 4: End-to-End Prototype ✅
-Built complete agentic RAG application with:
+### Task 4: End-to-End Prototype 🔄
+Will build complete agentic RAG application with:
 - File upload processing (PDF, DOCX, images with OCR)
 - Multi-agent validation workflow using LangGraph
 - Real-time evidence assessment with confidence scoring
 - Streamlit interface for user interaction
 - Local FastAPI deployment
 
-### Task 5: Golden Test Dataset ✅
-Created comprehensive synthetic evaluation dataset with RAGAS framework:
+### Task 5: Golden Test Dataset 🔄
+Will create comprehensive synthetic evaluation dataset with RAGAS framework:
 - 100+ evidence scenarios covering high-quality, partial, poor, and edge cases
-- Baseline performance metrics established
-- Automated evaluation pipeline implemented
+- Baseline performance metrics to be established
+- Automated evaluation pipeline to be implemented
 
-### Task 6: Advanced Retrieval ✅
-Implemented and tested multiple advanced retrieval techniques:
+### Task 6: Advanced Retrieval 🔄
+Will implement and test multiple advanced retrieval techniques:
 - Hybrid Search: Semantic + keyword matching
 - Query Expansion: Automatic compliance term expansion
 - Multi-hop Retrieval: Cross-reference following
 - Metadata Filtering: Framework-specific filtering
 
-### Task 7: Performance Assessment ✅
-Comprehensive performance comparison across all retrieval methods with quantified improvements using RAGAS metrics.
+### Task 7: Performance Assessment 🔄
+Will conduct comprehensive performance comparison across all retrieval methods with quantified improvements using RAGAS metrics.
 
+---
 
-## 🎯 Key Features
+## 🎯 Key Features (Planned)
 
 ### Core Functionality
 - **Multi-format Document Processing**: PDF, DOCX, images with OCR support
@@ -102,17 +103,17 @@ Comprehensive performance comparison across all retrieval methods with quantifie
 
 ---
 
-## 📊 Performance Metrics
+## 📊 Performance Targets
 
-### RAGAS Evaluation Results
-| Metric | Baseline RAG | + Hybrid Search | + Query Expansion | + Multi-hop |
+### RAGAS Evaluation Goals
+| Metric | Target Baseline | Target with Hybrid Search | Target with Query Expansion | Target with Multi-hop |
 |--------|-------------|----------------|------------------|-------------|
 | Faithfulness | 0.85 | 0.88 | 0.89 | 0.91 |
 | Answer Relevancy | 0.80 | 0.83 | 0.85 | 0.87 |
 | Context Precision | 0.75 | 0.82 | 0.84 | 0.86 |
 | Context Recall | 0.70 | 0.76 | 0.78 | 0.82 |
 
-### Business Impact
+### Business Impact Goals
 - **Time Savings**: 70% reduction in evidence review time
 - **Consistency**: 95% agreement with expert assessments
 - **Cost Reduction**: $200K+ annual savings for mid-size audit teams
@@ -137,7 +138,7 @@ Comprehensive performance comparison across all retrieval methods with quantifie
 
 ## 🏆 Bootcamp Learning Integration
 
-This project demonstrates mastery of key bootcamp concepts:
+This project will demonstrate mastery of key bootcamp concepts:
 
 - **Session 2**: RAG implementation with embeddings and vector databases
 - **Session 4**: Production-grade LangChain/LCEL pipelines
