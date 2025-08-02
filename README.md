@@ -1,6 +1,8 @@
 # 🔍 Veritarc AI - Evidence Validator
 ## AI-Powered Verification for Audit, Risk & Compliance
 
+Refer to all the rules files from cursor /rules folder
+
 ### 🎯 Bootcamp Final Challenge Submission
 
 This project will address the bootcamp challenge requirements through 7 comprehensive tasks, building an end-to-end AI application for audit evidence validation.
@@ -36,27 +38,27 @@ Veritarc AI will transform evidence review from a manual bottleneck into an inte
 - **Vector Database**: Chroma - Fast similarity search for control requirements matching
 - **Monitoring**: LangSmith - Real-time performance tracking and debugging
 - **Evaluation**: RAGAS - Automated assessment of faithfulness, relevance, and context precision
-- **User Interface**: Streamlit + React - Rapid development with professional scalability
+- **User Interface**: Streamlit - Rapid development for prototype demonstration
 - **Serving**: FastAPI + Docker - Production-ready API with containerized deployment
 
 **Agentic Reasoning:**
-- Evidence Analysis Agent: Will extract key information from uploaded documents
-- Compliance Validation Agent: Will match evidence against specific control requirements
+- Evidence Analysis Agent: Will extract key information from uploaded PDF documents
+- Compliance Validation Agent: Will match evidence against SOX control requirements
 - Risk Assessment Agent: Will evaluate completeness and identify potential gaps
 - Recommendation Agent: Will suggest specific improvements or next steps
 
 ### Task 3: Data Strategy ✅
 **Data Sources:**
-1. **Control Requirements Database**: Public SOX, SOC2, ISO27001 frameworks
+1. **SOX Control Requirements Database**: Public SOX framework documentation
 2. **Synthetic Evidence Documents**: Will be generated using GPT-4 with known pass/fail labels
 3. **Tavily Search API**: Real-time regulatory guidance and best practices
-4. **Public SEC Filings**: Real-world compliance documentation examples
+4. **Public SEC Filings**: Real-world SOX compliance documentation examples
 
-**Chunking Strategy:** Semantic chunking with 500-token overlaps to preserve logical relationships in control requirements while ensuring no critical connections are lost during retrieval.
+**Chunking Strategy:** Semantic chunking with 500-token overlaps to preserve logical relationships in SOX control requirements while ensuring no critical connections are lost during retrieval.
 
 ### Task 4: End-to-End Prototype 🔄
 Will build complete agentic RAG application with:
-- File upload processing (PDF, DOCX, images with OCR)
+- PDF file upload processing
 - Multi-agent validation workflow using LangGraph
 - Real-time evidence assessment with confidence scoring
 - Streamlit interface for user interaction
@@ -83,8 +85,8 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 ## 🎯 Key Features (Planned)
 
 ### Core Functionality
-- **Multi-format Document Processing**: PDF, DOCX, images with OCR support
-- **Framework Support**: SOX, SOC2, ISO27001 control requirements
+- **PDF Document Processing**: Streamlined PDF upload and text extraction
+- **SOX Framework Support**: Focused on Sarbanes-Oxley control requirements
 - **Confidence Scoring**: AI-generated confidence levels for each validation
 - **Gap Analysis**: Specific recommendations for evidence improvement
 - **Audit Trail**: Complete logging for regulatory compliance
@@ -96,7 +98,7 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 - **Real-time Processing**: Sub-30-second response times
 
 ### User Experience
-- **Intuitive Interface**: Simple drag-and-drop evidence upload
+- **Intuitive Interface**: Simple drag-and-drop PDF upload
 - **Instant Results**: Real-time validation with detailed explanations
 - **Export Capabilities**: PDF reports for audit documentation
 - **Responsive Design**: Works on desktop and mobile devices
@@ -123,6 +125,8 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 ## 🔮 Future Roadmap
 
 ### Phase 2 Enhancements
+- **Multi-format Support**: DOCX, images with OCR, CSV files
+- **Additional Frameworks**: SOC2, ISO27001 compliance support
 - **Fine-tuned Models**: Custom embedding models for audit terminology
 - **Multi-modal Processing**: Advanced chart and table analysis
 - **Integration APIs**: Connect with major GRC platforms
@@ -289,7 +293,7 @@ auditflow-ai/
 │   ├── streamlit_app.py              # Main Streamlit interface
 │   └── src/                          # React components (future)
 ├── data/
-│   ├── control_requirements/         # SOX, SOC2, ISO27001 frameworks
+│   ├── control_requirements/         # SOX framework documentation
 │   ├── synthetic_evidence/           # Generated test evidence
 │   └── processed/                    # Processed datasets
 ├── notebooks/

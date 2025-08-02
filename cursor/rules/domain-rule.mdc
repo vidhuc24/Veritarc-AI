@@ -10,23 +10,24 @@ This is an AI-powered evidence validation system for audit, risk, and compliance
 
 ## Domain-Specific Terminology
 - **Audit Evidence**: Documents proving control effectiveness
-- **Control Frameworks**: SOX (Sarbanes-Oxley), SOC2, ISO27001
-- **Compliance Requirements**: Regulatory standards and best practices
+- **Control Frameworks**: SOX (Sarbanes-Oxley) - Primary focus for prototype
+- **Compliance Requirements**: SOX regulatory standards and best practices
 - **Risk Assessment**: Evaluating control gaps and weaknesses
 - **Evidence Types**: Financial reconciliations, access reviews, change logs, system configurations
 
 ## Regulatory Frameworks
-### SOX (Sarbanes-Oxley)
+### SOX (Sarbanes-Oxley) - Primary Focus
 - Focus on financial reporting controls
 - Emphasis on management assertions and testing
 - Required documentation and evidence standards
+- **Prototype Scope**: Core SOX control requirements
 
-### SOC2 (Service Organization Control 2)
+### SOC2 (Service Organization Control 2) - Future Enhancement
 - Trust services criteria: Security, Availability, Processing Integrity, Confidentiality, Privacy
 - Evidence of control operation over time
 - Third-party service provider assessments
 
-### ISO27001 (Information Security Management)
+### ISO27001 (Information Security Management) - Future Enhancement
 - Information security management system requirements
 - Risk-based approach to security controls
 - Continuous improvement and monitoring
@@ -34,19 +35,21 @@ This is an AI-powered evidence validation system for audit, risk, and compliance
 ## AI Assistant Domain Guidelines
 When developing features, always consider:
 
-1. **Context Awareness**: Remember this is an audit evidence validation system
-2. **Compliance Focus**: Consider regulatory requirements (SOX, SOC2, ISO27001)
-3. **Evidence Types**: Support various audit evidence formats and sources
+1. **Context Awareness**: Remember this is an audit evidence validation system focused on SOX
+2. **Compliance Focus**: Consider SOX regulatory requirements for prototype
+3. **Evidence Types**: Support PDF audit evidence formats and sources
 4. **Confidence Scoring**: Provide quantifiable assessments of evidence quality
 5. **Audit Trail**: Maintain detailed logs of all validation processes
 6. **Professional Standards**: Align with audit profession best practices
+7. **Simplicity**: Focus on core SOX validation for prototype demonstration
 
 ## Business Requirements
-- **Accuracy**: 90%+ accuracy on control assessments
-- **Regulatory Compliance**: Meet audit profession standards
+- **Accuracy**: 90%+ accuracy on SOX control assessments
+- **Regulatory Compliance**: Meet SOX audit profession standards
 - **Evidence Handling**: Secure processing of sensitive audit documents
 - **Reporting**: Generate compliance-ready validation reports
 - **Traceability**: Full audit trail of validation decisions
+- **Prototype Focus**: Demonstrate core functionality with SOX framework
 
 ## Security & Privacy Considerations
 - Handle sensitive financial and operational data

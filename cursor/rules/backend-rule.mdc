@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
 # Veritarc AI - Backend Rules
@@ -34,21 +34,23 @@ alwaysApply: false
 - Implement proper memory management for agents
 
 ## File Processing
-- Support multiple formats: PDF, DOCX, images (PNG, JPG)
-- Implement proper error handling for corrupted files
-- Use streaming for large file uploads
-- Include file size and type validation
+- Support PDF format documents for evidence upload
+- Implement proper error handling for corrupted PDF files
+- Use streaming for large PDF file uploads
+- Include file size and type validation for PDFs
+- Extract text content from PDFs for RAG processing
 
 ## Multi-Agent Architecture
 - Use LangGraph for complex workflows
-- Focus on semantic search and retrieval accuracy
+- Focus on semantic search and retrieval accuracy for SOX controls
 - Implement proper state management in LangGraph agents
 - Consider evaluation-driven improvements with RAGAS metrics
 
 ## Backend Development Guidelines
 When working on backend components:
-1. **RAG Implementation**: Focus on semantic search and retrieval accuracy
+1. **RAG Implementation**: Focus on semantic search and retrieval accuracy for SOX requirements
 2. **Multi-Agent Architecture**: Use LangGraph for complex workflows
 3. **Evaluation-Driven**: Always consider RAGAS metrics for improvements
 4. **Performance**: Consider scalability and response time requirements
 5. **Security**: Handle sensitive audit data with proper security measures
+6. **Simplicity**: Focus on PDF processing and SOX compliance for prototype

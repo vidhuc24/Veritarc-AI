@@ -13,10 +13,10 @@ alwaysApply: false
 
 ## Primary Interface: Streamlit
 - Use Streamlit as the primary interface for evidence validation
-- Implement intuitive file upload workflows
+- Implement intuitive PDF file upload workflows
 - Display confidence scores and validation results clearly
 - Provide interactive data visualization for audit insights
-- Handle large file uploads with progress indicators
+- Handle large PDF file uploads with progress indicators
 - Implement proper error handling and user feedback
 - Apply core UX principles: ensure good contrast, responsive layouts, secure input fields
 
@@ -28,21 +28,24 @@ alwaysApply: false
 - Implement responsive design for various screen sizes
 - Focus on accessibility and usability
 - Use proper state management (Context API or Redux)
+- **Future Enhancement**: Support for multiple file types (DOCX, images, CSV)
 
 ## UI/UX Guidelines
 - Design with audit professionals in mind
 - Prioritize data clarity and evidence traceability
 - Use clear visual indicators for confidence levels
-- Implement intuitive navigation for complex workflows
-- Provide clear feedback for file processing status
+- Implement intuitive navigation for SOX validation workflows
+- Provide clear feedback for PDF processing status
 - Design for regulatory compliance documentation needs
+- Keep interface simple and focused for prototype demonstration
 
 ## Frontend Development Priorities
-1. **User Experience**: Focus on audit professional workflows
+1. **User Experience**: Focus on audit professional workflows for SOX compliance
 2. **Data Visualization**: Clear presentation of validation results
-3. **File Handling**: Robust upload and processing interfaces  
-4. **Performance**: Responsive interfaces for large document processing
+3. **File Handling**: Robust PDF upload and processing interfaces  
+4. **Performance**: Responsive interfaces for PDF document processing
 5. **Compliance**: Interface design that supports audit trail requirements
+6. **Simplicity**: Streamlined interface for prototype demonstration
 
 ## Integration with Backend
 - Handle async operations gracefully with loading states
