@@ -1,13 +1,14 @@
 """
 Vector Store Setup for Veritarc AI
-Handles loading SOX controls and evidence documents into Chroma
+Handles loading SOX controls and evidence documents into Qdrant
 """
 
 import json
 import os
-from typing import List, Dict, Any
-import chromadb
-from chromadb.config import Settings
+import uuid
+from typing import List, Dict, Any, Optional
+from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, VectorParams, PointStruct, Filter, FieldCondition, MatchValue
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -15,33 +16,65 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class VeritarcVectorStore:
-    def __init__(self, persist_directory: str = "./data/chroma_db"):
-        """Initialize the vector store with Chroma"""
+    def __init__(self, persist_directory: str = "./data/qdrant_db"):
+        """Initialize the vector store with Qdrant"""
         self.persist_directory = persist_directory
-        self.client = chromadb.PersistentClient(path=persist_directory)
+        
+        # Initialize Qdrant client (local/embedded mode)
+        self.client = QdrantClient(path=persist_directory)
+        
+        # Initialize OpenAI client for embeddings
         self.openai_client = OpenAI()
         
-        # Initialize collections
-        self.controls_collection = None
-        self.evidence_collection = None
+        # Collection names
+        self.controls_collection = "sox_controls"
+        self.evidence_collection = "evidence_documents"
+        
+        # Embedding model configuration
+        self.embedding_model = "text-embedding-3-small"
+        self.embedding_dimension = 1536  # text-embedding-3-small dimensions
+        
+    def _get_embedding(self, text: str) -> List[float]:
+        """Generate embedding for text using OpenAI text-embedding-3-small"""
+        try:
+            response = self.openai_client.embeddings.create(
+                input=text,
+                model=self.embedding_model
+            )
+            return response.data[0].embedding
+        except Exception as e:
+            print(f"❌ Error generating embedding: {e}")
+            raise
         
     def setup_collections(self):
-        """Create or get existing collections for controls and evidence"""
-        print("Setting up Chroma collections...")
+        """Create or recreate collections for controls and evidence"""
+        print(f"Setting up Qdrant collections with {self.embedding_model}...")
         
-        # Collection for SOX controls
-        self.controls_collection = self.client.get_or_create_collection(
-            name="sox_controls",
-            metadata={"description": "SOX ITGC control requirements and validation criteria"}
+        # Create vector configuration
+        vector_config = VectorParams(
+            size=self.embedding_dimension,
+            distance=Distance.COSINE
         )
         
-        # Collection for evidence documents
-        self.evidence_collection = self.client.get_or_create_collection(
-            name="evidence_documents", 
-            metadata={"description": "Synthetic audit evidence documents for testing"}
+        # Create or recreate SOX controls collection
+        if self.client.collection_exists(self.controls_collection):
+            self.client.delete_collection(self.controls_collection)
+            
+        self.client.create_collection(
+            collection_name=self.controls_collection,
+            vectors_config=vector_config
         )
         
-        print(f"✅ Collections ready: {self.controls_collection.name}, {self.evidence_collection.name}")
+        # Create or recreate evidence documents collection
+        if self.client.collection_exists(self.evidence_collection):
+            self.client.delete_collection(self.evidence_collection)
+            
+        self.client.create_collection(
+            collection_name=self.evidence_collection,
+            vectors_config=vector_config
+        )
+        
+        print(f"✅ Collections ready with {self.embedding_model}: {self.controls_collection}, {self.evidence_collection}")
         
     def load_sox_controls(self, controls_file: str = "data/sample_sox_controls.json"):
         """Load SOX controls into the vector store"""
@@ -53,10 +86,8 @@ class VeritarcVectorStore:
         with open(controls_file, 'r') as f:
             controls = json.load(f)
         
-        # Prepare documents for embedding
-        documents = []
-        metadatas = []
-        ids = []
+        # Prepare points for Qdrant
+        points = []
         
         for control in controls:
             # Create document text from control information
@@ -69,20 +100,33 @@ class VeritarcVectorStore:
             Keywords: {', '.join(control['keywords'])}
             """
             
-            documents.append(doc_text)
-            metadatas.append({
-                "control_id": control["control_id"],
-                "name": control["name"], 
-                "category": control["category"],
-                "document_type": "sox_control"
-            })
-            ids.append(control["control_id"])
+            # Generate embedding
+            embedding = self._get_embedding(doc_text.strip())
+            
+            # Generate UUID for Qdrant while keeping original ID in payload
+            point_uuid = str(uuid.uuid4())
+            
+            # Create point
+            point = PointStruct(
+                id=point_uuid,
+                vector=embedding,
+                payload={
+                    "control_id": control["control_id"],  # Keep original ID for reference
+                    "name": control["name"], 
+                    "category": control["category"],
+                    "description": control["description"],
+                    "validation_criteria": control["validation_criteria"],
+                    "keywords": control["keywords"],
+                    "document_type": "sox_control",
+                    "content": doc_text.strip()
+                }
+            )
+            points.append(point)
         
-        # Add to collection
-        self.controls_collection.add(
-            documents=documents,
-            metadatas=metadatas,
-            ids=ids
+        # Upload points to collection
+        self.client.upsert(
+            collection_name=self.controls_collection,
+            points=points
         )
         
         print(f"✅ Loaded {len(controls)} SOX controls into vector store")
@@ -98,34 +142,190 @@ class VeritarcVectorStore:
         with open(evidence_file, 'r') as f:
             evidence_docs = json.load(f)
         
-        # Prepare documents for embedding
-        documents = []
-        metadatas = []
-        ids = []
+        # Prepare points for Qdrant
+        points = []
         
         for i, doc in enumerate(evidence_docs):
             # Use the document content as the main text
             doc_text = doc["content"]
             
-            documents.append(doc_text)
-            metadatas.append({
-                "document_type": doc["document_type"],
-                "control_id": doc["control_id"],
-                "company": doc["company"],
-                "quality_level": doc["quality_level"],
-                "expected_result": doc["expected_result"]
-            })
-            ids.append(f"evidence_{i}_{doc['document_type']}")
+            # Generate embedding
+            embedding = self._get_embedding(doc_text)
+            
+            # Generate UUID for Qdrant while keeping original ID in payload
+            point_uuid = str(uuid.uuid4())
+            
+            # Create point
+            point = PointStruct(
+                id=point_uuid,
+                vector=embedding,
+                payload={
+                    "evidence_id": f"evidence_{i}_{doc['document_type']}",  # Keep original ID for reference
+                    "document_type": doc["document_type"],
+                    "control_id": doc["control_id"],
+                    "company": doc["company"],
+                    "quality_level": doc["quality_level"],
+                    "expected_result": doc["expected_result"],
+                    "generated_date": doc.get("generated_date", ""),
+                    "content": doc_text
+                }
+            )
+            points.append(point)
         
-        # Add to collection
-        self.evidence_collection.add(
-            documents=documents,
-            metadatas=metadatas,
-            ids=ids
+        # Upload points to collection
+        self.client.upsert(
+            collection_name=self.evidence_collection,
+            points=points
         )
         
         print(f"✅ Loaded {len(evidence_docs)} evidence documents into vector store")
         return len(evidence_docs)
+    
+    def search_controls(self, query: str, limit: int = 5, score_threshold: float = 0.0, 
+                       filters: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """Search SOX controls using semantic similarity"""
+        query_embedding = self._get_embedding(query)
+        
+        # Convert filters to Qdrant filter format if provided
+        qdrant_filter = None
+        if filters:
+            conditions = []
+            for key, value in filters.items():
+                conditions.append(
+                    FieldCondition(
+                        key=key,
+                        match=MatchValue(value=value)
+                    )
+                )
+            if conditions:
+                qdrant_filter = Filter(must=conditions)
+        
+        search_result = self.client.query_points(
+            collection_name=self.controls_collection,
+            query=query_embedding,
+            query_filter=qdrant_filter,
+            limit=limit,
+            score_threshold=score_threshold
+        )
+        
+        results = []
+        for point in search_result.points:
+            results.append({
+                "id": point.id,
+                "score": point.score,
+                "payload": point.payload
+            })
+        
+        return results
+    
+    def search_evidence(self, query: str, limit: int = 5, score_threshold: float = 0.0, 
+                       filters: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """Search evidence documents using semantic similarity"""
+        query_embedding = self._get_embedding(query)
+        
+        # Convert filters to Qdrant filter format if provided
+        qdrant_filter = None
+        if filters:
+            conditions = []
+            for key, value in filters.items():
+                conditions.append(
+                    FieldCondition(
+                        key=key,
+                        match=MatchValue(value=value)
+                    )
+                )
+            if conditions:
+                qdrant_filter = Filter(must=conditions)
+        
+        search_result = self.client.query_points(
+            collection_name=self.evidence_collection,
+            query=query_embedding,
+            query_filter=qdrant_filter,
+            limit=limit,
+            score_threshold=score_threshold
+        )
+        
+        results = []
+        for point in search_result.points:
+            results.append({
+                "id": point.id,
+                "score": point.score,
+                "payload": point.payload
+            })
+        
+        return results
+    
+    def get_by_id(self, collection: str, point_id: str) -> Optional[Dict[str, Any]]:
+        """Retrieve a specific point by ID"""
+        try:
+            points = self.client.retrieve(
+                collection_name=collection,
+                ids=[point_id]
+            )
+            if points:
+                point = points[0]
+                return {
+                    "id": point.id,
+                    "payload": point.payload
+                }
+            return None
+        except Exception as e:
+            print(f"❌ Error retrieving point {point_id}: {e}")
+            return None
+    
+    def get_control_by_control_id(self, control_id: str) -> Optional[Dict[str, Any]]:
+        """Find a control by its original control_id"""
+        try:
+            search_result = self.client.scroll(
+                collection_name=self.controls_collection,
+                scroll_filter=Filter(
+                    must=[
+                        FieldCondition(
+                            key="control_id",
+                            match=MatchValue(value=control_id)
+                        )
+                    ]
+                ),
+                limit=1
+            )
+            
+            if search_result[0]:  # search_result is (points, next_page_offset)
+                point = search_result[0][0]
+                return {
+                    "id": point.id,
+                    "payload": point.payload
+                }
+            return None
+        except Exception as e:
+            print(f"❌ Error retrieving control {control_id}: {e}")
+            return None
+    
+    def get_evidence_by_evidence_id(self, evidence_id: str) -> Optional[Dict[str, Any]]:
+        """Find evidence by its original evidence_id"""
+        try:
+            search_result = self.client.scroll(
+                collection_name=self.evidence_collection,
+                scroll_filter=Filter(
+                    must=[
+                        FieldCondition(
+                            key="evidence_id",
+                            match=MatchValue(value=evidence_id)
+                        )
+                    ]
+                ),
+                limit=1
+            )
+            
+            if search_result[0]:  # search_result is (points, next_page_offset)
+                point = search_result[0][0]
+                return {
+                    "id": point.id,
+                    "payload": point.payload
+                }
+            return None
+        except Exception as e:
+            print(f"❌ Error retrieving evidence {evidence_id}: {e}")
+            return None
     
     def test_basic_search(self):
         """Test basic similarity search functionality"""
@@ -133,53 +333,66 @@ class VeritarcVectorStore:
         
         # Test 1: Search for access control related content
         print("Test 1: Searching for 'access control' in controls...")
-        results = self.controls_collection.query(
-            query_texts=["access control user authentication"],
-            n_results=3
-        )
+        results = self.search_controls("access control user authentication", limit=3)
         
-        print(f"Found {len(results['documents'][0])} relevant controls:")
-        for i, doc in enumerate(results['documents'][0]):
-            print(f"  {i+1}. {doc[:100]}...")
+        print(f"Found {len(results)} relevant controls:")
+        for i, result in enumerate(results):
+            content = result['payload']['content'][:100]
+            print(f"  {i+1}. Score: {result['score']:.3f} - {content}...")
         
         # Test 2: Search for evidence documents
         print("\nTest 2: Searching for 'access review' in evidence...")
-        results = self.evidence_collection.query(
-            query_texts=["access review report user access"],
-            n_results=2
-        )
+        results = self.search_evidence("access review report user access", limit=2)
         
-        print(f"Found {len(results['documents'][0])} relevant evidence documents:")
-        for i, doc in enumerate(results['documents'][0]):
-            print(f"  {i+1}. {doc[:100]}...")
+        print(f"Found {len(results)} relevant evidence documents:")
+        for i, result in enumerate(results):
+            content = result['payload']['content'][:100]
+            print(f"  {i+1}. Score: {result['score']:.3f} - {content}...")
         
         # Test 3: Check collection statistics
         print(f"\nTest 3: Collection statistics:")
-        print(f"  Controls collection: {self.controls_collection.count()} documents")
-        print(f"  Evidence collection: {self.evidence_collection.count()} documents")
+        controls_info = self.client.get_collection(self.controls_collection)
+        evidence_info = self.client.get_collection(self.evidence_collection)
+        
+        print(f"  Controls collection: {controls_info.points_count} documents")
+        print(f"  Evidence collection: {evidence_info.points_count} documents")
         
         print("✅ Basic search tests completed successfully!")
     
     def get_collection_info(self):
         """Get information about the loaded collections"""
         print("\n📊 Vector Store Information:")
-        print(f"  Controls Collection: {self.controls_collection.count()} documents")
-        print(f"  Evidence Collection: {self.evidence_collection.count()} documents")
+        
+        controls_info = self.client.get_collection(self.controls_collection)
+        evidence_info = self.client.get_collection(self.evidence_collection)
+        
+        print(f"  Controls Collection: {controls_info.points_count} documents")
+        print(f"  Evidence Collection: {evidence_info.points_count} documents")
         print(f"  Persist Directory: {self.persist_directory}")
+        print(f"  Embedding Model: {self.embedding_model}")
+        print(f"  Vector Dimensions: {self.embedding_dimension}")
         
         # Sample some documents
-        if self.controls_collection.count() > 0:
-            sample_controls = self.controls_collection.get(limit=2)
-            print(f"\nSample Control IDs: {sample_controls['ids']}")
+        if controls_info.points_count > 0:
+            sample_controls = self.client.scroll(
+                collection_name=self.controls_collection,
+                limit=2
+            )
+            control_ids = [point.payload.get("control_id", point.id) for point in sample_controls[0]]
+            print(f"\nSample Control IDs: {control_ids}")
         
-        if self.evidence_collection.count() > 0:
-            sample_evidence = self.evidence_collection.get(limit=2)
-            print(f"Sample Evidence IDs: {sample_evidence['ids']}")
+        if evidence_info.points_count > 0:
+            sample_evidence = self.client.scroll(
+                collection_name=self.evidence_collection,
+                limit=2
+            )
+            evidence_ids = [point.payload.get("evidence_id", point.id) for point in sample_evidence[0]]
+            print(f"Sample Evidence IDs: {evidence_ids}")
 
 
 def main():
     """Main function to set up and test the vector store"""
-    print("🚀 Setting up Veritarc AI Vector Store...")
+    print("🚀 Setting up Veritarc AI Vector Store with Qdrant...")
     
     # Initialize vector store
     vector_store = VeritarcVectorStore()
@@ -200,7 +413,7 @@ def main():
         vector_store.test_basic_search()
         vector_store.get_collection_info()
         
-        print("\n🎉 Step 1 Complete: Vector Store Setup Successful!")
+        print("\n🎉 Step 1 Complete: Qdrant Vector Store Setup Successful!")
         
     except Exception as e:
         print(f"❌ Error during data loading: {e}")

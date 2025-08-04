@@ -5,11 +5,16 @@ Advanced document retrieval with metadata filtering, hybrid search, and query ex
 
 import json
 import re
+import sys
+import os
 from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
-import chromadb
 from openai import OpenAI
 from dotenv import load_dotenv
+
+# Add current directory to path for imports
+sys.path.append(os.path.join(os.path.dirname(__file__)))
+from vector_store import VeritarcVectorStore
 
 # Load environment variables
 load_dotenv()
@@ -24,25 +29,21 @@ class RetrievalResult:
     retrieval_method: str
 
 class VeritarcRetrievalEngine:
-    def __init__(self, vector_store_path: str = "./data/chroma_db"):
-        """Initialize the retrieval engine with vector store connection"""
-        self.client = chromadb.PersistentClient(path=vector_store_path)
+    def __init__(self, vector_store_path: str = "./data/qdrant_db"):
+        """Initialize the retrieval engine with Qdrant vector store"""
+        self.vector_store = VeritarcVectorStore(vector_store_path)
         self.openai_client = OpenAI()
-        
-        # Get collections
-        self.controls_collection = self.client.get_collection("sox_controls")
-        self.evidence_collection = self.client.get_collection("evidence_documents")
         
         # Query expansion mappings for compliance terminology
         self.compliance_expansions = {
             "access": ["authentication", "authorization", "user management", "permissions", "login"],
             "change": ["modification", "update", "deployment", "implementation", "rollback"],
             "backup": ["recovery", "restoration", "disaster", "continuity", "data protection"],
-            "review": ["audit", "assessment", "evaluation", "certification", "validation"],
-            "approval": ["authorization", "signature", "endorsement", "consent", "permission"],
-            "testing": ["validation", "verification", "quality assurance", "QA", "test results"],
-            "monitoring": ["surveillance", "tracking", "logging", "alerting", "oversight"],
-            "security": ["protection", "safeguard", "control", "defense", "risk mitigation"]
+            "control": ["requirement", "policy", "procedure", "standard", "guideline"],
+            "audit": ["review", "assessment", "evaluation", "examination", "verification"],
+            "compliance": ["adherence", "conformance", "regulatory", "governance", "oversight"],
+            "security": ["protection", "safeguard", "defense", "risk", "vulnerability"],
+            "financial": ["accounting", "reporting", "disclosure", "transaction", "record"]
         }
     
     def expand_query(self, query: str) -> List[str]:
@@ -66,42 +67,41 @@ class VeritarcRetrievalEngine:
         
         return list(set(expanded_queries))  # Remove duplicates
     
-    def semantic_search(self, query: str, collection, n_results: int = 5, 
+    def semantic_search(self, query: str, collection_name: str, n_results: int = 5, 
                        metadata_filter: Optional[Dict] = None) -> List[RetrievalResult]:
         """Perform semantic search with optional metadata filtering"""
         
-        # Build where clause for metadata filtering
-        where_clause = None
-        if metadata_filter:
-            where_clause = {}
-            for key, value in metadata_filter.items():
-                if isinstance(value, list):
-                    where_clause[key] = {"$in": value}
-                else:
-                    where_clause[key] = value
-        
-        # Perform search
-        results = collection.query(
-            query_texts=[query],
-            n_results=n_results,
-            where=where_clause
-        )
+        # Use appropriate search method based on collection
+        if collection_name == "sox_controls":
+            search_results = self.vector_store.search_controls(
+                query=query,
+                limit=n_results,
+                score_threshold=0.0,
+                filters=metadata_filter
+            )
+        else:  # evidence_documents
+            search_results = self.vector_store.search_evidence(
+                query=query,
+                limit=n_results,
+                score_threshold=0.0,
+                filters=metadata_filter
+            )
         
         # Convert to RetrievalResult objects
         retrieval_results = []
-        for i in range(len(results['ids'][0])):
-            result = RetrievalResult(
-                document_id=results['ids'][0][i],
-                content=results['documents'][0][i],
-                metadata=results['metadatas'][0][i],
-                similarity_score=results['distances'][0][i],
+        for result in search_results:
+            retrieval_result = RetrievalResult(
+                document_id=result['payload'].get('control_id') or result['payload'].get('evidence_id') or result['id'],
+                content=result['payload'].get('content', ''),
+                metadata=result['payload'],
+                similarity_score=result['score'],
                 retrieval_method="semantic_search"
             )
-            retrieval_results.append(result)
+            retrieval_results.append(retrieval_result)
         
         return retrieval_results
     
-    def keyword_search(self, query: str, collection, n_results: int = 5,
+    def keyword_search(self, query: str, collection_name: str, n_results: int = 5,
                       metadata_filter: Optional[Dict] = None) -> List[RetrievalResult]:
         """Perform keyword-based search using query expansion"""
         
@@ -110,7 +110,7 @@ class VeritarcRetrievalEngine:
         
         all_results = []
         for expanded_query in expanded_queries:
-            results = self.semantic_search(expanded_query, collection, n_results, metadata_filter)
+            results = self.semantic_search(expanded_query, collection_name, n_results, metadata_filter)
             all_results.extend(results)
         
         # Remove duplicates and sort by similarity
@@ -119,24 +119,24 @@ class VeritarcRetrievalEngine:
             if result.document_id not in unique_results:
                 unique_results[result.document_id] = result
             else:
-                # Keep the better score
-                if result.similarity_score < unique_results[result.document_id].similarity_score:
+                # Keep the better score (higher is better in Qdrant)
+                if result.similarity_score > unique_results[result.document_id].similarity_score:
                     unique_results[result.document_id] = result
         
-        # Sort by similarity score and return top results
-        sorted_results = sorted(unique_results.values(), key=lambda x: x.similarity_score)
+        # Sort by similarity score (descending) and return top results
+        sorted_results = sorted(unique_results.values(), key=lambda x: x.similarity_score, reverse=True)
         return sorted_results[:n_results]
     
-    def hybrid_search(self, query: str, collection, n_results: int = 5,
+    def hybrid_search(self, query: str, collection_name: str, n_results: int = 5,
                      metadata_filter: Optional[Dict] = None,
                      semantic_weight: float = 0.7) -> List[RetrievalResult]:
         """Combine semantic and keyword search for better results"""
         
         # Get semantic search results
-        semantic_results = self.semantic_search(query, collection, n_results * 2, metadata_filter)
+        semantic_results = self.semantic_search(query, collection_name, n_results * 2, metadata_filter)
         
         # Get keyword search results
-        keyword_results = self.keyword_search(query, collection, n_results * 2, metadata_filter)
+        keyword_results = self.keyword_search(query, collection_name, n_results * 2, metadata_filter)
         
         # Combine and score results
         combined_results = {}
@@ -145,35 +145,42 @@ class VeritarcRetrievalEngine:
         for result in semantic_results:
             combined_results[result.document_id] = {
                 'result': result,
-                'semantic_score': 1 - result.similarity_score,  # Convert distance to similarity
-                'keyword_score': 0
+                'semantic_score': result.similarity_score,
+                'keyword_score': 0.0
             }
         
         # Add keyword results
         for result in keyword_results:
             if result.document_id in combined_results:
-                combined_results[result.document_id]['keyword_score'] = 1 - result.similarity_score
+                combined_results[result.document_id]['keyword_score'] = result.similarity_score
             else:
                 combined_results[result.document_id] = {
                     'result': result,
-                    'semantic_score': 0,
-                    'keyword_score': 1 - result.similarity_score
+                    'semantic_score': 0.0,
+                    'keyword_score': result.similarity_score
                 }
         
         # Calculate hybrid scores
-        hybrid_results = []
+        final_results = []
         for doc_id, scores in combined_results.items():
+            # Normalize scores and combine
             hybrid_score = (semantic_weight * scores['semantic_score'] + 
                           (1 - semantic_weight) * scores['keyword_score'])
             
+            # Create new result with hybrid score
             result = scores['result']
-            result.similarity_score = 1 - hybrid_score  # Convert back to distance
-            result.retrieval_method = "hybrid_search"
-            hybrid_results.append(result)
+            hybrid_result = RetrievalResult(
+                document_id=result.document_id,
+                content=result.content,
+                metadata=result.metadata,
+                similarity_score=hybrid_score,
+                retrieval_method="hybrid_search"
+            )
+            final_results.append(hybrid_result)
         
-        # Sort by hybrid score and return top results
-        hybrid_results.sort(key=lambda x: x.similarity_score)
-        return hybrid_results[:n_results]
+        # Sort by hybrid score (descending) and return top results
+        final_results.sort(key=lambda x: x.similarity_score, reverse=True)
+        return final_results[:n_results]
     
     def retrieve_controls_for_evidence(self, evidence_content: str, 
                                      category_filter: Optional[str] = None) -> List[RetrievalResult]:
@@ -191,7 +198,7 @@ class VeritarcRetrievalEngine:
             metadata_filter = {"category": category_filter}
         
         # Use hybrid search for better control matching
-        results = self.hybrid_search(query, self.controls_collection, n_results=3, 
+        results = self.hybrid_search(query, "sox_controls", n_results=3, 
                                    metadata_filter=metadata_filter)
         
         return results
@@ -206,17 +213,13 @@ class VeritarcRetrievalEngine:
         if not control_details:
             return []
         
-        # Build query from control information - use available fields
+        # Build query from control information
         query_parts = []
         if 'name' in control_details:
             query_parts.append(control_details['name'])
-        
-        # Get the full control document content for better query building
-        control_docs = self.controls_collection.get(ids=[control_id])
-        if control_docs['documents']:
-            # Extract key terms from the full control document
-            control_content = control_docs['documents'][0]
-            key_terms = self.extract_key_terms(control_content)
+        if 'description' in control_details:
+            # Extract key terms from the description
+            key_terms = self.extract_key_terms(control_details['description'])
             query_parts.extend(key_terms[:3])  # Add top 3 key terms
         
         query = " ".join(query_parts)
@@ -229,7 +232,7 @@ class VeritarcRetrievalEngine:
             metadata_filter["quality_level"] = quality_level
         
         # Use hybrid search for better evidence matching
-        results = self.hybrid_search(query, self.evidence_collection, n_results=5,
+        results = self.hybrid_search(query, "evidence_documents", n_results=5,
                                    metadata_filter=metadata_filter)
         
         return results
@@ -253,13 +256,13 @@ class VeritarcRetrievalEngine:
     
     def get_control_details(self, control_id: str) -> Optional[Dict[str, Any]]:
         """Get details of a specific SOX control"""
-        results = self.controls_collection.get(ids=[control_id])
-        if results['ids']:
-            return results['metadatas'][0]
+        control_result = self.vector_store.get_control_by_control_id(control_id)
+        if control_result:
+            return control_result['payload']
         return None
     
     def test_retrieval_accuracy(self):
-        """Test retrieval accuracy with sample queries"""
+        """Test the accuracy of retrieval methods"""
         print("\n🧪 Testing retrieval accuracy...")
         
         # Test 1: Control retrieval for evidence
@@ -268,25 +271,25 @@ class VeritarcRetrievalEngine:
         controls = self.retrieve_controls_for_evidence(sample_evidence)
         print(f"Found {len(controls)} relevant controls:")
         for i, control in enumerate(controls):
-            print(f"  {i+1}. {control.metadata.get('name', 'Unknown')} (Score: {1-control.similarity_score:.3f})")
+            print(f"  {i+1}. {control.metadata.get('name', 'Unknown')} (Score: {control.similarity_score:.3f})")
         
         # Test 2: Evidence retrieval for control
         print("\nTest 2: Retrieving evidence for SOX-ITGC-AC-02...")
         evidence = self.retrieve_evidence_for_control("SOX-ITGC-AC-02")
         print(f"Found {len(evidence)} relevant evidence documents:")
         for i, doc in enumerate(evidence):
-            print(f"  {i+1}. {doc.metadata.get('document_type', 'Unknown')} - {doc.metadata.get('company', 'Unknown')} (Score: {1-doc.similarity_score:.3f})")
+            print(f"  {i+1}. {doc.metadata.get('document_type', 'Unknown')} - {doc.metadata.get('company', 'Unknown')} (Score: {doc.similarity_score:.3f})")
         
         # Test 3: Hybrid search with metadata filtering
         print("\nTest 3: Hybrid search with quality filter...")
         results = self.hybrid_search(
             "change management approval testing",
-            self.evidence_collection,
+            "evidence_documents",
             metadata_filter={"quality_level": "high"}
         )
         print(f"Found {len(results)} high-quality change management evidence:")
         for i, result in enumerate(results):
-            print(f"  {i+1}. {result.metadata.get('document_type', 'Unknown')} - {result.metadata.get('company', 'Unknown')} (Score: {1-result.similarity_score:.3f})")
+            print(f"  {i+1}. {result.metadata.get('document_type', 'Unknown')} - {result.metadata.get('company', 'Unknown')} (Score: {result.similarity_score:.3f})")
         
         print("✅ Retrieval accuracy tests completed!")
 

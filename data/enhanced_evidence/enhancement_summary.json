@@ -1,0 +1,22 @@
+{
+  "generation_timestamp": "2025-08-03T22:27:22.615827",
+  "total_documents": 3,
+  "enhancements_applied": [
+    "RAGAS_control_id_references",
+    "explicit_validation_criteria",
+    "role_specific_details",
+    "workflow_process_documentation",
+    "enhanced_quality_variations"
+  ],
+  "document_distribution": {
+    "access_review_reports": 1,
+    "change_request_forms": 1,
+    "backup_verification_logs": 1
+  },
+  "quality_distribution": {
+    "high": 1,
+    "medium": 1,
+    "low": 0,
+    "fail": 1
+  }
+}
