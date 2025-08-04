@@ -1,0 +1,14 @@
+{
+  "test_timestamp": "2025-08-03T23:18:19.016408",
+  "test_type": "basic_ragas_pipeline",
+  "items_tested": 3,
+  "metrics_tested": [
+    "user_input",
+    "retrieved_contexts",
+    "response",
+    "reference",
+    "answer_relevancy"
+  ],
+  "status": "completed",
+  "notes": "Basic RAGAS pipeline validation test"
+}

@@ -1,13 +1,14 @@
 """
 AuditFlow AI - Streamlit Frontend
-AI-Powered Control Evidence Validation System
+AI-Powered Control Evidence Validation System with Document Chat
 """
 
 import streamlit as st
 import requests
 import json
-from typing import Optional
+from typing import Optional, List
 import time
+import uuid
 
 # Page configuration
 st.set_page_config(
@@ -46,14 +47,42 @@ st.markdown("""
         padding: 1rem;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .chat-message {
+        padding: 1rem;
+        margin: 0.5rem 0;
+        border-radius: 10px;
+    }
+    .user-message {
+        background-color: #e3f2fd;
+        margin-left: 2rem;
+    }
+    .assistant-message {
+        background-color: #f5f5f5;
+        margin-right: 2rem;
+    }
+    .chat-input {
+        position: sticky;
+        bottom: 0;
+        background-color: white;
+        padding: 1rem;
+        border-top: 1px solid #ddd;
+    }
 </style>
 """, unsafe_allow_html=True)
+
+# Initialize session state
+if 'conversation_id' not in st.session_state:
+    st.session_state.conversation_id = str(uuid.uuid4())
+if 'chat_history' not in st.session_state:
+    st.session_state.chat_history = []
+if 'uploaded_document' not in st.session_state:
+    st.session_state.uploaded_document = None
 
 # Main app
 def main():
     # Header
     st.markdown('<h1 class="main-header">🔍 AuditFlow AI</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; font-size: 1.2em; color: #666;">AI-Powered Control Evidence Validation System</p>', unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center; font-size: 1.2em; color: #666;">AI-Powered Control Evidence Validation & Document Chat System</p>', unsafe_allow_html=True)
     
     # Sidebar for configuration
     with st.sidebar:
@@ -99,6 +128,18 @@ def main():
                 help="Backend API endpoint"
             )
     
+    # Create tabs for different modes
+    tab1, tab2 = st.tabs(["📊 Evidence Validation", "💬 Document Chat"])
+    
+    with tab1:
+        validation_interface(control, control_id, framework, api_endpoint)
+    
+    with tab2:
+        chat_interface(api_endpoint)
+
+def validation_interface(control: str, control_id: str, framework: str, api_endpoint: str):
+    """Evidence validation interface"""
+    
     # Main content area
     col1, col2 = st.columns([1, 1])
     
@@ -110,11 +151,15 @@ def main():
         uploaded_file = st.file_uploader(
             "Choose evidence document",
             type=['pdf', 'docx', 'png', 'jpg', 'jpeg'],
-            help="Upload your control evidence document (PDF, DOCX, or image)"
+            help="Upload your control evidence document (PDF, DOCX, or image)",
+            key="validation_upload"
         )
         st.markdown('</div>', unsafe_allow_html=True)
         
         if uploaded_file is not None:
+            # Store uploaded document for chat
+            st.session_state.uploaded_document = uploaded_file
+            
             # Display file info
             st.success(f"✅ File uploaded: {uploaded_file.name}")
             st.info(f"📊 File size: {uploaded_file.size:,} bytes")
@@ -132,6 +177,129 @@ def main():
             display_results(st.session_state.validation_results)
         else:
             st.info("👆 Upload a document and click 'Validate Evidence' to see results")
+
+def chat_interface(api_endpoint: str):
+    """Document chat interface"""
+    
+    st.header("💬 Chat with Your Document")
+    
+    # Check if document is uploaded
+    if st.session_state.uploaded_document is None:
+        st.info("📄 Please upload a document in the 'Evidence Validation' tab first to start chatting.")
+        return
+    
+    # Document info
+    st.success(f"📄 Chatting with: {st.session_state.uploaded_document.name}")
+    
+    # Chat history container
+    chat_container = st.container()
+    
+    with chat_container:
+        # Display chat history
+        for message in st.session_state.chat_history:
+            if message['role'] == 'user':
+                st.markdown(f"""
+                <div class="chat-message user-message">
+                    <strong>You:</strong> {message['content']}
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div class="chat-message assistant-message">
+                    <strong>AI Assistant:</strong> {message['content']}
+                    <br><small><em>Sources: {', '.join(message.get('sources', []))}</em></small>
+                </div>
+                """, unsafe_allow_html=True)
+    
+    # Chat input
+    st.markdown("---")
+    
+    # Suggested questions
+    st.subheader("💡 Suggested Questions")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("What does this document show about access controls?"):
+            send_chat_message("What does this document show about access controls?", api_endpoint)
+    
+    with col2:
+        if st.button("Are there any approval processes documented?"):
+            send_chat_message("Are there any approval processes documented?", api_endpoint)
+    
+    with col3:
+        if st.button("What compliance requirements does this address?"):
+            send_chat_message("What compliance requirements does this address?", api_endpoint)
+    
+    # Chat input form
+    with st.form("chat_form", clear_on_submit=True):
+        user_input = st.text_input(
+            "Ask a question about your document:",
+            placeholder="e.g., What users are mentioned in this access review?",
+            help="Ask any question about the uploaded document"
+        )
+        
+        col1, col2, col3 = st.columns([1, 1, 4])
+        with col1:
+            submit_button = st.form_submit_button("Send 💬", type="primary")
+        with col2:
+            clear_button = st.form_submit_button("Clear Chat 🗑️")
+        
+        if submit_button and user_input:
+            send_chat_message(user_input, api_endpoint)
+        
+        if clear_button:
+            st.session_state.chat_history = []
+            st.session_state.conversation_id = str(uuid.uuid4())
+            st.rerun()
+
+def send_chat_message(message: str, api_endpoint: str):
+    """Send chat message to backend"""
+    
+    with st.spinner("🤔 AI is thinking..."):
+        try:
+            # Prepare chat request
+            chat_data = {
+                "message": message,
+                "document_id": st.session_state.uploaded_document.name if st.session_state.uploaded_document else None,
+                "conversation_id": st.session_state.conversation_id
+            }
+            
+            # Make API request
+            response = requests.post(
+                f"{api_endpoint}/chat",
+                json=chat_data,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                
+                # Add messages to chat history
+                st.session_state.chat_history.append({
+                    'role': 'user',
+                    'content': message
+                })
+                
+                st.session_state.chat_history.append({
+                    'role': 'assistant',
+                    'content': result['response'],
+                    'sources': result.get('sources', []),
+                    'confidence': result.get('confidence', 0)
+                })
+                
+                # Update conversation ID
+                st.session_state.conversation_id = result['conversation_id']
+                
+                st.rerun()
+            else:
+                st.error(f"❌ Chat failed: {response.text}")
+                
+        except requests.exceptions.ConnectionError:
+            st.error("❌ Cannot connect to backend API. Make sure the server is running on " + api_endpoint)
+        except requests.exceptions.Timeout:
+            st.error("⏰ Request timed out. Please try again.")
+        except Exception as e:
+            st.error(f"❌ Unexpected error: {str(e)}")
 
 def validate_evidence(uploaded_file, control_id: str, framework: str, api_endpoint: str):
     """Send file to backend for validation"""
@@ -265,17 +433,26 @@ def show_about():
     st.header("ℹ️ About AuditFlow AI")
     
     st.markdown("""
-    **AuditFlow AI** is an intelligent evidence validation system that helps audit teams:
+    **AuditFlow AI** is an intelligent evidence validation system with document chat capabilities that helps audit teams:
     
     - 🚀 **Save Time**: Reduce manual evidence review by 70%
     - 🎯 **Improve Consistency**: Eliminate subjective evaluations
     - 📊 **Enhance Quality**: Identify gaps and provide recommendations
+    - 💬 **Interactive Analysis**: Chat with documents to extract insights
     - 🔍 **Ensure Compliance**: Support SOX, SOC2, and ISO27001 frameworks
     
     ### How it works:
+    
+    **Evidence Validation:**
     1. Upload your evidence document (PDF, DOCX, or image)
     2. Select the compliance framework and control
     3. Get instant AI-powered validation with recommendations
+    
+    **Document Chat:**
+    1. Upload a document in the validation tab
+    2. Switch to the chat tab
+    3. Ask natural language questions about your document
+    4. Get AI-powered answers with source references
     
     ### Supported Frameworks:
     - **SOX**: Sarbanes-Oxley Act compliance
@@ -298,6 +475,6 @@ elif page == "ℹ️ About":
 # Footer
 st.markdown("---")
 st.markdown(
-    '<p style="text-align: center; color: #666;">Built with ❤️ using Streamlit and FastAPI | AuditFlow AI v1.0</p>',
+    '<p style="text-align: center; color: #666;">Built with ❤️ using Streamlit and FastAPI | AuditFlow AI v1.0 with Document Chat</p>',
     unsafe_allow_html=True
 ) 

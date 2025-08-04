@@ -5,13 +5,13 @@ Refer to all the rules files from cursor /rules folder
 
 ### 🎯 Bootcamp Final Challenge Submission
 
-This project will address the bootcamp challenge requirements through 7 comprehensive tasks, building an end-to-end AI application for audit evidence validation.
+This project will address the bootcamp challenge requirements through 7 comprehensive tasks, building an end-to-end AI application for audit evidence validation with intelligent document chat capabilities.
 
 ---
 
 ## 🎬 Demo Video
 📹 **[5-Minute Live Demo](https://www.loom.com/share/YOUR_LOOM_LINK_HERE)**
-> *Live demonstration of the Veritarc AI application showing evidence upload, validation, and results*
+> *Live demonstration of the Veritarc AI application showing evidence upload, validation, document chat, and results*
 
 ---
 
@@ -29,16 +29,16 @@ This creates a cascade of problems: audit cycles extend beyond deadlines, junior
 
 ### Task 2: Proposed Solution ✅
 **Solution Vision:**
-Veritarc AI will transform evidence review from a manual bottleneck into an intelligent, consistent process. Auditors will upload evidence documents (PDFs, screenshots, logs) and specify the control framework and requirement. The system will instantly analyze the document against comprehensive control criteria, providing a confidence-scored assessment with specific recommendations.
+Veritarc AI will transform evidence review from a manual bottleneck into an intelligent, consistent process. Auditors will upload evidence documents (PDFs, screenshots, logs) and specify the control framework and requirement. The system will instantly analyze the document against comprehensive control criteria, providing a confidence-scored assessment with specific recommendations. Additionally, users can engage in natural language conversations with documents to extract insights and understand compliance details.
 
 **Technology Stack:**
-- **LLM**: OpenAI GPT-4 - Superior reasoning for complex control requirement interpretation
+- **LLM**: OpenAI GPT-4 - Superior reasoning for complex control requirement interpretation and document chat
 - **Embedding Model**: OpenAI text-embedding-3-small - Proven performance for document similarity matching  
-- **Orchestration**: LangChain + LangGraph - Enables multi-agent validation workflow
-- **Vector Database**: Chroma - Fast similarity search for control requirements matching
+- **Orchestration**: LangChain + LangGraph - Enables multi-agent validation workflow and chat pipeline
+- **Vector Database**: Qdrant - Fast similarity search for control requirements matching and document retrieval
 - **Monitoring**: LangSmith - Real-time performance tracking and debugging
-- **Evaluation**: RAGAS - Automated assessment of faithfulness, relevance, and context precision
-- **User Interface**: Streamlit - Rapid development for prototype demonstration
+- **Evaluation**: RAGAS - Automated assessment of faithfulness, relevance, and context precision for chat responses
+- **User Interface**: Streamlit - Rapid development for prototype demonstration with dual-mode interface
 - **Serving**: FastAPI + Docker - Production-ready API with containerized deployment
 
 **Agentic Reasoning:**
@@ -46,6 +46,7 @@ Veritarc AI will transform evidence review from a manual bottleneck into an inte
 - Compliance Validation Agent: Will match evidence against SOX control requirements
 - Risk Assessment Agent: Will evaluate completeness and identify potential gaps
 - Recommendation Agent: Will suggest specific improvements or next steps
+- Document Chat Agent: Will provide conversational interface for document exploration and Q&A
 
 ### Task 3: Data Strategy ✅
 **Data Sources:**
@@ -60,15 +61,17 @@ Veritarc AI will transform evidence review from a manual bottleneck into an inte
 Will build complete agentic RAG application with:
 - PDF file upload processing
 - Multi-agent validation workflow using LangGraph
+- Interactive document chat interface for Q&A
 - Real-time evidence assessment with confidence scoring
-- Streamlit interface for user interaction
+- Dual-mode Streamlit interface (Validation + Chat)
 - Local FastAPI deployment
 
 ### Task 5: Golden Test Dataset 🔄
 Will create comprehensive synthetic evaluation dataset with RAGAS framework:
 - 100+ evidence scenarios covering high-quality, partial, poor, and edge cases
+- Chat Q&A pairs for document interaction evaluation
 - Baseline performance metrics to be established
-- Automated evaluation pipeline to be implemented
+- Automated evaluation pipeline for both validation and chat capabilities
 
 ### Task 6: Advanced Retrieval 🔄
 Will implement and test multiple advanced retrieval techniques:
@@ -76,9 +79,10 @@ Will implement and test multiple advanced retrieval techniques:
 - Query Expansion: Automatic compliance term expansion
 - Multi-hop Retrieval: Cross-reference following
 - Metadata Filtering: Framework-specific filtering
+- Conversational Retrieval: Context-aware chat responses
 
 ### Task 7: Performance Assessment 🔄
-Will conduct comprehensive performance comparison across all retrieval methods with quantified improvements using RAGAS metrics.
+Will conduct comprehensive performance comparison across all retrieval methods with quantified improvements using RAGAS metrics for both validation accuracy and chat response quality.
 
 ---
 
@@ -90,16 +94,21 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 - **Confidence Scoring**: AI-generated confidence levels for each validation
 - **Gap Analysis**: Specific recommendations for evidence improvement
 - **Audit Trail**: Complete logging for regulatory compliance
+- **Interactive Document Chat**: Natural language Q&A with uploaded documents
 
 ### Advanced AI Capabilities
 - **Multi-Agent Validation**: Specialized agents for different validation aspects
+- **Conversational Interface**: Chat with documents using natural language
 - **Advanced Retrieval**: Hybrid search, query expansion, multi-hop retrieval
 - **Continuous Learning**: Model improvement from user feedback
 - **Real-time Processing**: Sub-30-second response times
+- **Context-Aware Responses**: Chat maintains conversation history and document context
 
 ### User Experience
 - **Intuitive Interface**: Simple drag-and-drop PDF upload
+- **Dual-Mode Interface**: Switch between Validation and Chat modes
 - **Instant Results**: Real-time validation with detailed explanations
+- **Interactive Q&A**: Ask questions about document content and compliance
 - **Export Capabilities**: PDF reports for audit documentation
 - **Responsive Design**: Works on desktop and mobile devices
 
@@ -108,16 +117,17 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 ## 📊 Performance Targets
 
 ### RAGAS Evaluation Goals
-| Metric | Target Baseline | Target with Hybrid Search | Target with Query Expansion | Target with Multi-hop |
-|--------|-------------|----------------|------------------|-------------|
-| Faithfulness | 0.85 | 0.88 | 0.89 | 0.91 |
-| Answer Relevancy | 0.80 | 0.83 | 0.85 | 0.87 |
-| Context Precision | 0.75 | 0.82 | 0.84 | 0.86 |
-| Context Recall | 0.70 | 0.76 | 0.78 | 0.82 |
+| Metric | Validation Baseline | Chat Baseline | Target with Hybrid Search | Target with Query Expansion | Target with Multi-hop |
+|--------|-------------|-------------|----------------|------------------|-------------|
+| Faithfulness | 0.85 | 0.80 | 0.88 | 0.89 | 0.91 |
+| Answer Relevancy | 0.80 | 0.75 | 0.83 | 0.85 | 0.87 |
+| Context Precision | 0.75 | 0.70 | 0.82 | 0.84 | 0.86 |
+| Context Recall | 0.70 | 0.65 | 0.76 | 0.78 | 0.82 |
 
 ### Business Impact Goals
 - **Time Savings**: 70% reduction in evidence review time
 - **Consistency**: 95% agreement with expert assessments
+- **User Engagement**: 80% of users utilize chat feature for document exploration
 - **Cost Reduction**: $200K+ annual savings for mid-size audit teams
 
 ---
@@ -131,6 +141,7 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 - **Multi-modal Processing**: Advanced chart and table analysis
 - **Integration APIs**: Connect with major GRC platforms
 - **Mobile Application**: Native iOS/Android apps
+- **Advanced Chat Features**: Multi-document conversations, chat history, bookmarking
 
 ### Scaling Opportunities
 - **Enterprise Deployment**: Multi-tenant SaaS platform
@@ -145,10 +156,10 @@ Will conduct comprehensive performance comparison across all retrieval methods w
 This project will demonstrate mastery of key bootcamp concepts:
 
 - **Session 2**: RAG implementation with embeddings and vector databases
-- **Session 4**: Production-grade LangChain/LCEL pipelines
+- **Session 4**: Production-grade LangChain/LCEL pipelines for validation and chat
 - **Session 5-6**: Multi-agent systems with LangGraph
 - **Session 7**: Synthetic data generation and LangSmith monitoring
-- **Session 8**: Comprehensive evaluation with RAGAS
+- **Session 8**: Comprehensive evaluation with RAGAS for both validation and chat responses
 - **Session 9**: Advanced retrieval techniques and optimization
 
 ---
@@ -265,7 +276,7 @@ cd frontend && streamlit run streamlit_app.py
 ```
 
 ### Access the Application
-- **Frontend**: http://localhost:8501
+- **Frontend**: http://localhost:8501 (Validation & Chat Interface)
 - **API Documentation**: http://localhost:8000/docs
 
 ---
@@ -282,27 +293,38 @@ auditflow-ai/
 │   ├── app/
 │   │   ├── evidence_processor.py     # Document processing
 │   │   ├── validation_engine.py      # RAG + LLM validation
-│   │   └── retrieval_engine.py       # Advanced retrieval methods
+│   │   ├── retrieval_engine.py       # Advanced retrieval methods
+│   │   ├── chat_engine.py            # Document chat interface
+│   │   └── vector_store.py           # Qdrant vector database management
 │   ├── agents/
 │   │   ├── evidence_agent.py         # Evidence analysis agent
 │   │   ├── compliance_agent.py       # Compliance validation agent
-│   │   └── recommendation_agent.py   # Recommendation agent
+│   │   ├── recommendation_agent.py   # Recommendation agent
+│   │   └── chat_agent.py             # Document chat agent
 │   └── models/
 │       └── schemas.py                # Pydantic models
 ├── frontend/
-│   ├── streamlit_app.py              # Main Streamlit interface
+│   ├── streamlit_app.py              # Main Streamlit interface (Validation + Chat)
 │   └── src/                          # React components (future)
 ├── data/
 │   ├── control_requirements/         # SOX framework documentation
 │   ├── synthetic_evidence/           # Generated test evidence
+│   ├── enhanced_evidence/            # RAGAS-enhanced evidence
+│   ├── evaluation_datasets/          # RAGAS evaluation datasets
 │   └── processed/                    # Processed datasets
+├── scripts/
+│   ├── generate_synthetic_evidence.py # Synthetic data creation
+│   ├── ragas_*.py                    # RAGAS integration scripts
+│   └── evaluation_*.py               # Evaluation pipelines
 ├── notebooks/
 │   ├── 01_data_generation.ipynb      # Synthetic data creation
 │   ├── 02_rag_pipeline.ipynb         # RAG development
 │   ├── 03_evaluation.ipynb           # RAGAS evaluation
-│   └── 04_advanced_retrieval.ipynb   # Advanced techniques testing
+│   ├── 04_advanced_retrieval.ipynb   # Advanced techniques testing
+│   └── 05_chat_interface.ipynb       # Document chat development
 ├── tests/
 │   ├── test_validation_engine.py     # Unit tests
+│   ├── test_chat_engine.py           # Chat functionality tests
 │   └── test_agents.py                # Agent tests
 └── docs/
     ├── CHALLENGE_RESPONSES.md         # Detailed task responses

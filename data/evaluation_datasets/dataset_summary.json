@@ -1,0 +1,32 @@
+{
+  "creation_timestamp": "2025-08-03T23:08:17.023763",
+  "datasets_created": {
+    "basic_evaluation_questions": {
+      "file": "ragas_evaluation_questions.json",
+      "count": 12,
+      "description": "Basic RAGAS evaluation questions with ground truth contexts"
+    },
+    "rag_pipeline_dataset": {
+      "file": "rag_pipeline_dataset.json",
+      "count": 12,
+      "description": "Full RAG pipeline evaluation with retrieved contexts"
+    }
+  },
+  "dataset_composition": {
+    "original_evidence": 9,
+    "enhanced_evidence": 3,
+    "total": 12
+  },
+  "quality_distribution": {
+    "high": 4,
+    "medium": 3,
+    "low": 2,
+    "fail": 3
+  },
+  "control_coverage": {
+    "SOX-ITGC-AC-02": 3,
+    "SOX-ITGC-CM-01": 4,
+    "SOX-ITGC-DR-01": 4,
+    "SOX-ITGC-AC-01": 1
+  }
+}

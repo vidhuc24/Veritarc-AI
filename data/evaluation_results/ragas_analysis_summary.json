@@ -1,0 +1,225 @@
+{
+  "evaluation_timestamp": "2025-08-03T23:16:19.720076",
+  "total_items_evaluated": 12,
+  "overall_metrics": {
+    "faithfulness": {
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "answer_relevancy": {
+      "mean": 0.4106658897988646,
+      "std": 0.08602660368246624,
+      "min": 0.31285460459105835,
+      "max": 0.5243775972064846
+    },
+    "context_precision": {
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "context_recall": {
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    }
+  },
+  "source_analysis": {
+    "original": {
+      "count": 9,
+      "metrics": {
+        "faithfulness": {
+          "mean": NaN,
+          "count": 9
+        },
+        "answer_relevancy": {
+          "mean": 0.40954471176387375,
+          "count": 9
+        },
+        "context_precision": {
+          "mean": NaN,
+          "count": 9
+        },
+        "context_recall": {
+          "mean": NaN,
+          "count": 9
+        }
+      }
+    },
+    "specific_control_reference": {
+      "count": 1,
+      "metrics": {
+        "faithfulness": {
+          "mean": 0.0,
+          "count": 1
+        },
+        "answer_relevancy": {
+          "mean": 0.5243775972064846,
+          "count": 1
+        },
+        "context_precision": {
+          "mean": 0.0,
+          "count": 1
+        },
+        "context_recall": {
+          "mean": 0.0,
+          "count": 1
+        }
+      }
+    },
+    "explicit_validation_criteria": {
+      "count": 1,
+      "metrics": {
+        "faithfulness": {
+          "mean": 0.0,
+          "count": 1
+        },
+        "answer_relevancy": {
+          "mean": 0.31285460459105835,
+          "count": 1
+        },
+        "context_precision": {
+          "mean": 0.0,
+          "count": 1
+        },
+        "context_recall": {
+          "mean": 0.0,
+          "count": 1
+        }
+      }
+    },
+    "process_workflow_details": {
+      "count": 1,
+      "metrics": {
+        "faithfulness": {
+          "mean": 0.0,
+          "count": 1
+        },
+        "answer_relevancy": {
+          "mean": 0.4048560699139678,
+          "count": 1
+        },
+        "context_precision": {
+          "mean": 0.0,
+          "count": 1
+        },
+        "context_recall": {
+          "mean": 0.0,
+          "count": 1
+        }
+      }
+    }
+  },
+  "quality_analysis": {
+    "high": {
+      "count": 4,
+      "metrics": {
+        "faithfulness": {
+          "mean": NaN,
+          "count": 4
+        },
+        "answer_relevancy": {
+          "mean": 0.4382637197079085,
+          "count": 4
+        },
+        "context_precision": {
+          "mean": NaN,
+          "count": 4
+        },
+        "context_recall": {
+          "mean": NaN,
+          "count": 4
+        }
+      }
+    },
+    "medium": {
+      "count": 3,
+      "metrics": {
+        "faithfulness": {
+          "mean": NaN,
+          "count": 3
+        },
+        "answer_relevancy": {
+          "mean": 0.34353749607008394,
+          "count": 3
+        },
+        "context_precision": {
+          "mean": NaN,
+          "count": 3
+        },
+        "context_recall": {
+          "mean": NaN,
+          "count": 3
+        }
+      }
+    },
+    "low": {
+      "count": 2,
+      "metrics": {
+        "faithfulness": {
+          "mean": NaN,
+          "count": 2
+        },
+        "answer_relevancy": {
+          "mean": 0.457879552317333,
+          "count": 2
+        },
+        "context_precision": {
+          "mean": 0.0,
+          "count": 2
+        },
+        "context_recall": {
+          "mean": NaN,
+          "count": 2
+        }
+      }
+    },
+    "fail": {
+      "count": 3,
+      "metrics": {
+        "faithfulness": {
+          "mean": NaN,
+          "count": 3
+        },
+        "answer_relevancy": {
+          "mean": 0.40952140196994097,
+          "count": 3
+        },
+        "context_precision": {
+          "mean": 0.0,
+          "count": 3
+        },
+        "context_recall": {
+          "mean": NaN,
+          "count": 3
+        }
+      }
+    }
+  },
+  "target_accuracy": 0.9,
+  "performance_assessment": {
+    "faithfulness": {
+      "current_score": 0.0,
+      "target_met": false,
+      "gap_to_target": 0.9
+    },
+    "answer_relevancy": {
+      "current_score": 0.4106658897988646,
+      "target_met": false,
+      "gap_to_target": 0.48933411020113543
+    },
+    "context_precision": {
+      "current_score": 0.0,
+      "target_met": false,
+      "gap_to_target": 0.9
+    },
+    "context_recall": {
+      "current_score": 0.0,
+      "target_met": false,
+      "gap_to_target": 0.9
+    }
+  }
+}
