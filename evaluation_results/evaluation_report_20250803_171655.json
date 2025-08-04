@@ -1,0 +1,148 @@
+{
+  "evaluation_timestamp": "2025-08-03 17:16:55",
+  "accuracy_metrics": {
+    "overall_accuracy": 0.6666666666666666,
+    "correct_predictions": 6,
+    "total_tests": 9,
+    "false_positives": 3,
+    "false_negatives": 0,
+    "false_positive_rate": 0.3333333333333333,
+    "false_negative_rate": 0.0
+  },
+  "performance_metrics": {
+    "average_processing_time": 9.072642299864027,
+    "total_processing_time": 81.65378069877625
+  },
+  "consistency_metrics": {
+    "overall_consistency_score": 0.9966049382716049,
+    "quality_level_consistency": {
+      "high": {
+        "count": 3,
+        "average_score": 0.8666666666666667,
+        "score_variance": 0.0005555555555555565,
+        "score_range": 0.050000000000000044
+      },
+      "medium": {
+        "count": 2,
+        "average_score": 0.825,
+        "score_variance": 0.0006249999999999984,
+        "score_range": 0.04999999999999993
+      },
+      "low": {
+        "count": 2,
+        "average_score": 0.75,
+        "score_variance": 0.0025000000000000044,
+        "score_range": 0.10000000000000009
+      },
+      "fail": {
+        "count": 2,
+        "average_score": 0.75,
+        "score_variance": 0.0,
+        "score_range": 0.0
+      }
+    },
+    "control_category_consistency": {
+      "Access Controls": {
+        "count": 3,
+        "average_score": 0.8166666666666668,
+        "score_variance": 0.0038888888888888896,
+        "score_range": 0.15000000000000002
+      },
+      "Change Management": {
+        "count": 3,
+        "average_score": 0.8166666666666668,
+        "score_variance": 0.000555555555555554,
+        "score_range": 0.04999999999999993
+      },
+      "Data Backup & Recovery": {
+        "count": 3,
+        "average_score": 0.8166666666666668,
+        "score_variance": 0.007222222222222226,
+        "score_range": 0.20000000000000007
+      }
+    }
+  },
+  "detailed_results": [
+    {
+      "evidence_id": "evidence_0",
+      "expected_result": "pass",
+      "predicted_result": "partial",
+      "validation_score": 0.9,
+      "is_correct": true,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-AC-02"
+    },
+    {
+      "evidence_id": "evidence_1",
+      "expected_result": "pass",
+      "predicted_result": "partial",
+      "validation_score": 0.8,
+      "is_correct": true,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-CM-01"
+    },
+    {
+      "evidence_id": "evidence_2",
+      "expected_result": "fail",
+      "predicted_result": "partial",
+      "validation_score": 0.7,
+      "is_correct": false,
+      "confidence_level": "Medium",
+      "control_id": "SOX-ITGC-DR-01"
+    },
+    {
+      "evidence_id": "evidence_3",
+      "expected_result": "fail",
+      "predicted_result": "fail",
+      "validation_score": 0.8,
+      "is_correct": true,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-AC-02"
+    },
+    {
+      "evidence_id": "evidence_4",
+      "expected_result": "pass",
+      "predicted_result": "pass",
+      "validation_score": 0.85,
+      "is_correct": true,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-CM-01"
+    },
+    {
+      "evidence_id": "evidence_5",
+      "expected_result": "pass",
+      "predicted_result": "partial",
+      "validation_score": 0.85,
+      "is_correct": true,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-DR-01"
+    },
+    {
+      "evidence_id": "evidence_6",
+      "expected_result": "fail",
+      "predicted_result": "partial",
+      "validation_score": 0.8,
+      "is_correct": false,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-AC-02"
+    },
+    {
+      "evidence_id": "evidence_7",
+      "expected_result": "fail",
+      "predicted_result": "partial",
+      "validation_score": 0.8,
+      "is_correct": false,
+      "confidence_level": "Medium",
+      "control_id": "SOX-ITGC-CM-01"
+    },
+    {
+      "evidence_id": "evidence_8",
+      "expected_result": "pass",
+      "predicted_result": "pass",
+      "validation_score": 0.9,
+      "is_correct": true,
+      "confidence_level": "High",
+      "control_id": "SOX-ITGC-DR-01"
+    }
+  ]
+}

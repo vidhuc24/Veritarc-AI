@@ -1,0 +1,18 @@
+{
+  "total_documents": 9,
+  "by_type": {
+    "access_review_report": 3,
+    "change_request_form": 3,
+    "backup_verification_log": 3
+  },
+  "by_quality": {
+    "high": 3,
+    "medium": 2,
+    "low": 2,
+    "fail": 2
+  },
+  "by_expected_result": {
+    "pass": 5,
+    "fail": 4
+  }
+}

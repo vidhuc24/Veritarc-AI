@@ -1,0 +1,268 @@
+[
+  {
+    "control_id": "SOX-ITGC-AC-01",
+    "name": "Access Control - User Authentication & Authorization",
+    "category": "Access Controls",
+    "description": "Ensures that access to financial systems and sensitive data is restricted to authorized personnel through proper authentication mechanisms and role-based access controls. Users must be properly identified, authenticated, and authorized before accessing critical financial applications, payment processing systems, or customer data.",
+    "validation_criteria": [
+      "User accounts are created only with proper management approval",
+      "Multi-factor authentication is implemented for financial system access",
+      "Role-based access controls are properly configured and documented",
+      "Access permissions align with job responsibilities and segregation of duties",
+      "User access is regularly reviewed and certified by management",
+      "Terminated employee access is promptly removed from all systems"
+    ],
+    "keywords": [
+      "access control",
+      "authentication",
+      "authorization", 
+      "user management",
+      "permissions",
+      "multi-factor authentication",
+      "MFA",
+      "role-based access",
+      "RBAC",
+      "user provisioning",
+      "access review",
+      "segregation of duties"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-AC-02",
+    "name": "Access Control - Access Review & Monitoring",
+    "category": "Access Controls",
+    "description": "Ensures that user access to financial systems is regularly reviewed, monitored, and validated to detect unauthorized access attempts, inappropriate privileges, or dormant accounts. This includes monitoring login activities, reviewing access permissions, and ensuring access remains appropriate for current job functions.",
+    "validation_criteria": [
+      "User access reviews are performed at least quarterly",
+      "Access review results are documented and retained",
+      "Inappropriate or excessive access is identified and remediated",
+      "Dormant or inactive accounts are identified and disabled",
+      "Failed login attempts and suspicious activities are monitored",
+      "Access review findings are escalated to management",
+      "Remediation actions are tracked and verified"
+    ],
+    "keywords": [
+      "access review",
+      "access monitoring",
+      "quarterly review",
+      "user access certification",
+      "dormant accounts",
+      "inactive accounts",
+      "failed login attempts",
+      "suspicious activity",
+      "access remediation",
+      "inappropriate access",
+      "excessive privileges",
+      "login monitoring"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-AC-03",
+    "name": "Access Control - Privileged Access Management",
+    "category": "Access Controls",
+    "description": "Ensures that privileged access to critical financial systems, databases, and administrative functions is strictly controlled, monitored, and limited to authorized personnel with legitimate business needs. This includes database administrators, system administrators, and users with elevated financial system privileges.",
+    "validation_criteria": [
+      "Privileged access is granted only with explicit management approval",
+      "Privileged accounts are regularly reviewed and certified",
+      "Administrative activities are logged and monitored",
+      "Shared or generic privileged accounts are prohibited",
+      "Privileged access sessions are time-limited when possible",
+      "Privileged users undergo additional background screening",
+      "Emergency privileged access procedures are documented and controlled"
+    ],
+    "keywords": [
+      "privileged access",
+      "administrative access",
+      "elevated privileges",
+      "database administrator",
+      "system administrator",
+      "privileged accounts",
+      "administrative activities",
+      "privileged user monitoring",
+      "emergency access",
+      "shared accounts",
+      "generic accounts",
+      "background screening"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-CM-01", 
+    "name": "Change Management - Change Request & Approval Process",
+    "category": "Change Management",
+    "description": "Ensures that all changes to production systems, applications, and infrastructure that could impact financial reporting are properly requested, reviewed, approved, tested, and documented. This includes changes to payment processing systems, financial reporting applications, database configurations, and security settings.",
+    "validation_criteria": [
+      "All system changes are initiated through formal change requests",
+      "Change requests include business justification and impact assessment",
+      "Changes are reviewed and approved by appropriate stakeholders",
+      "Technical and business approvals are documented and retained",
+      "Emergency changes follow expedited but controlled procedures",
+      "Change implementation is documented with rollback procedures",
+      "Post-implementation validation confirms successful deployment"
+    ],
+    "keywords": [
+      "change management",
+      "change request",
+      "change approval",
+      "system changes",
+      "production changes",
+      "change control",
+      "change documentation",
+      "rollback procedures",
+      "emergency changes",
+      "change impact assessment",
+      "stakeholder approval",
+      "deployment validation"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-CM-02",
+    "name": "Change Management - System Change Testing & Validation",
+    "category": "Change Management",
+    "description": "Ensures that all changes to financial systems undergo appropriate testing in non-production environments before deployment to production. This includes unit testing, integration testing, user acceptance testing, and validation that changes meet business requirements without introducing security vulnerabilities or data integrity issues.",
+    "validation_criteria": [
+      "Changes are tested in dedicated non-production environments",
+      "Test plans are developed and executed for all changes",
+      "Testing includes functional, integration, and security validation",
+      "User acceptance testing is performed by business stakeholders",
+      "Test results are documented and reviewed before deployment",
+      "Performance impact testing is conducted for significant changes",
+      "Regression testing ensures existing functionality remains intact"
+    ],
+    "keywords": [
+      "change testing",
+      "system testing",
+      "test environment",
+      "non-production testing",
+      "unit testing",
+      "integration testing",
+      "user acceptance testing",
+      "UAT",
+      "test plans",
+      "regression testing",
+      "performance testing",
+      "security testing"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-CM-03",
+    "name": "Change Management - Emergency Change Management",
+    "category": "Change Management",
+    "description": "Ensures that emergency changes to production systems are properly controlled, documented, and subject to expedited approval processes while maintaining appropriate oversight and audit trails. Emergency changes should be limited to critical security fixes or system outages that impact financial operations.",
+    "validation_criteria": [
+      "Emergency change procedures are clearly defined and documented",
+      "Emergency changes require senior management approval",
+      "Business justification for emergency status is documented",
+      "Emergency changes are implemented with appropriate oversight",
+      "All emergency changes are logged and tracked",
+      "Post-implementation review of emergency changes is conducted",
+      "Emergency changes undergo retroactive formal approval process"
+    ],
+    "keywords": [
+      "emergency changes",
+      "urgent changes",
+      "critical fixes",
+      "system outages",
+      "emergency procedures",
+      "senior management approval",
+      "emergency oversight",
+      "retroactive approval",
+      "post-implementation review",
+      "emergency documentation",
+      "critical security fixes",
+      "production incidents"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-DR-01",
+    "name": "Data Backup & Recovery - Data Backup Procedures & Verification", 
+    "category": "Data Backup & Recovery",
+    "description": "Ensures that critical financial data, transaction records, and system configurations are regularly backed up, properly stored, and can be successfully restored to maintain business continuity and data integrity. This includes customer transaction data, payment records, financial reporting databases, and audit trail information.",
+    "validation_criteria": [
+      "Backup procedures are documented and regularly executed",
+      "Critical financial data is backed up according to defined schedules",
+      "Backup completion status is monitored and verified",
+      "Backup data integrity is regularly tested through restoration tests",
+      "Backup media is securely stored with appropriate access controls",
+      "Offsite backup storage provides protection against local disasters",
+      "Backup retention periods comply with regulatory requirements",
+      "Recovery procedures are documented and periodically tested"
+    ],
+    "keywords": [
+      "data backup",
+      "backup procedures", 
+      "data recovery",
+      "backup verification",
+      "restoration testing",
+      "backup integrity",
+      "financial data backup",
+      "transaction data",
+      "backup monitoring",
+      "offsite backup",
+      "backup retention",
+      "disaster recovery",
+      "business continuity",
+      "recovery procedures"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-DR-02",
+    "name": "Data Backup & Recovery - Disaster Recovery Testing",
+    "category": "Data Backup & Recovery",
+    "description": "Ensures that disaster recovery plans and procedures are regularly tested to validate the organization's ability to restore critical financial systems and data following a major disruption. This includes testing backup restoration, system recovery procedures, and business continuity processes.",
+    "validation_criteria": [
+      "Disaster recovery plans are documented and regularly updated",
+      "Recovery testing is performed at least annually",
+      "Test scenarios include various disaster types and failure modes",
+      "Recovery time objectives (RTO) and recovery point objectives (RPO) are defined",
+      "Test results are documented and gaps are identified",
+      "Recovery procedures are updated based on test findings",
+      "Key stakeholders participate in disaster recovery testing",
+      "Communication plans are tested as part of recovery procedures"
+    ],
+    "keywords": [
+      "disaster recovery",
+      "DR testing",
+      "recovery testing",
+      "business continuity",
+      "recovery time objective",
+      "RTO",
+      "recovery point objective", 
+      "RPO",
+      "disaster scenarios",
+      "recovery procedures",
+      "system restoration",
+      "failover testing",
+      "continuity planning"
+    ]
+  },
+  {
+    "control_id": "SOX-ITGC-DR-03",
+    "name": "Data Backup & Recovery - Data Restoration & Integrity",
+    "category": "Data Backup & Recovery",
+    "description": "Ensures that data restoration processes maintain the accuracy, completeness, and integrity of financial information when recovering from backups. This includes validation that restored data matches original data, proper handling of transaction logs, and verification of data consistency across related systems.",
+    "validation_criteria": [
+      "Data restoration procedures are documented and tested",
+      "Restored data integrity is verified through checksums or validation routines",
+      "Transaction logs are properly applied during restoration processes",
+      "Data consistency across related systems is validated after restoration",
+      "Restoration processes include point-in-time recovery capabilities",
+      "Data validation procedures confirm completeness of restored information",
+      "Restoration activities are logged and monitored for accuracy",
+      "Business users validate restored data before returning to normal operations"
+    ],
+    "keywords": [
+      "data restoration",
+      "data integrity",
+      "restoration procedures",
+      "data validation",
+      "transaction logs",
+      "point-in-time recovery",
+      "data consistency",
+      "restoration verification",
+      "data completeness",
+      "checksums",
+      "validation routines",
+      "restoration monitoring"
+    ]
+  }
+] 

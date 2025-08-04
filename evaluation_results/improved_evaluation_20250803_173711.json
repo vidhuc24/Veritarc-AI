@@ -1,0 +1,107 @@
+{
+  "evaluation_type": "improved_system_evaluation",
+  "timestamp": "2025-08-03 17:37:11",
+  "summary_metrics": {
+    "accuracy": 0.8888888888888888,
+    "partial_prediction_rate": 0.0,
+    "average_processing_time": 8.08521933025784,
+    "total_documents": 9
+  },
+  "detailed_results": [
+    {
+      "document_id": 0,
+      "expected": "pass",
+      "predicted": "pass",
+      "score": 0.9600000000000001,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 8.751368045806885,
+      "rationale": "The evidence provided shows that Marketplace Inc. has a robust access control process in place that ..."
+    },
+    {
+      "document_id": 1,
+      "expected": "pass",
+      "predicted": "fail",
+      "score": 0.7250000000000001,
+      "correct": false,
+      "is_partial": false,
+      "processing_time": 8.102608919143677,
+      "rationale": "Despite the presence of most required elements, the lack of approval signatures is a significant gap..."
+    },
+    {
+      "document_id": 2,
+      "expected": "fail",
+      "predicted": "fail",
+      "score": 0.6649999999999999,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 8.242275953292847,
+      "rationale": "The evidence partially meets SOX requirements. Regular backups and integrity checks are performed fo..."
+    },
+    {
+      "document_id": 3,
+      "expected": "fail",
+      "predicted": "fail",
+      "score": 0.475,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 8.565391778945923,
+      "rationale": "The evidence fails to meet SOX requirements due to significant gaps in manager approvals and inappro..."
+    },
+    {
+      "document_id": 4,
+      "expected": "pass",
+      "predicted": "pass",
+      "score": 0.875,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 8.392162084579468,
+      "rationale": "Despite the change request form being comprehensive and well-documented, it fails to comply with SOX..."
+    },
+    {
+      "document_id": 5,
+      "expected": "pass",
+      "predicted": "pass",
+      "score": 0.9650000000000001,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 8.067872047424316,
+      "rationale": "Despite minor issues with network stability leading to failed backups, the company has shown a robus..."
+    },
+    {
+      "document_id": 6,
+      "expected": "fail",
+      "predicted": "fail",
+      "score": 0.6749999999999999,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 7.572390079498291,
+      "rationale": "The decision is based on the SOX requirement for segregation of duties and access management. While ..."
+    },
+    {
+      "document_id": 7,
+      "expected": "fail",
+      "predicted": "fail",
+      "score": 0.6549999999999999,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 7.429790019989014,
+      "rationale": "The change request form does not meet SOX requirements due to missing approvals and incomplete testi..."
+    },
+    {
+      "document_id": 8,
+      "expected": "pass",
+      "predicted": "pass",
+      "score": 0.9550000000000001,
+      "correct": true,
+      "is_partial": false,
+      "processing_time": 7.643115043640137,
+      "rationale": "The evidence provided meets all the SOX requirements for data backup and recovery. This includes reg..."
+    }
+  ],
+  "improvement_analysis": {
+    "target_accuracy_met": false,
+    "partial_predictions_reduced": true,
+    "performance_acceptable": true
+  }
+}
